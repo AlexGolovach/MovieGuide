@@ -2,6 +2,8 @@
     <string name="app_name">Movie</string>
     <string name="no_account">Don\'t have an account?</string>
 
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
     <string name="sign_up_text">"<u>"Sign Up"</u>"</string>
     <string name="sign_up">Sign Up</string>
     <string name="password">Password</string>
