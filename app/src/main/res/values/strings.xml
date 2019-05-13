@@ -10,4 +10,9 @@
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="username">Username</string>
+    <string name="exit">Exit</string>
+    <string name="search">Search</string>
+    <string name="movie_not_found">Movie not found</string>
+    <string name="movies_with_actor">Movies with actor:</string>
+    <string name="recommended_movies">Recommended movies:</string>
 </resources>
