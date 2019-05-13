@@ -1,4 +1,4 @@
-package com.example.android.network
+package com.example.android.network.httprequest
 
 import android.os.AsyncTask
 import okhttp3.OkHttpClient
@@ -12,11 +12,12 @@ class HttpRequest private constructor(){
         @Volatile
         private var instance: HttpRequest? = null
 
-        fun getInstance():HttpRequest?{
+        fun getInstance(): HttpRequest?{
             if (instance == null){
                 synchronized(HttpRequest::class.java){
                     if (instance == null){
-                        instance = HttpRequest()
+                        instance =
+                            HttpRequest()
                     }
                 }
             }
@@ -26,7 +27,7 @@ class HttpRequest private constructor(){
     }
 
     fun load(url: String, callback: Callback) {
-        if (url == "") {
+        if (url != "") {
             LoaderTask(callback).execute(url)
         } else {
             callback.onError(NullPointerException("Url must not be null"))

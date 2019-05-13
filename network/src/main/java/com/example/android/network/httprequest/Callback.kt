@@ -1,4 +1,4 @@
-package com.example.android.network
+package com.example.android.network.httprequest
 
 interface Callback {
 
