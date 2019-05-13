@@ -42,9 +42,9 @@ class ImageLoader private constructor() {
     fun load(url: String, callback: Callback) {
         val bitmap = cache.get(url)
 
-        if (bitmap != null && url != "") {
+        if (bitmap != null) {
             callback.onSuccess(url, bitmap)
-        } else{
+        } else {
             LoaderTask(callback).execute(url)
         }
     }
@@ -56,7 +56,7 @@ class ImageLoader private constructor() {
 
         override fun doInBackground(vararg urls: String): Bitmap? {
             url = urls[0]
-            val image: Bitmap?
+            val image: Bitmap
 
             try {
                 val inputStream = URL(url).openStream()
@@ -78,4 +78,3 @@ class ImageLoader private constructor() {
         }
     }
 }
-

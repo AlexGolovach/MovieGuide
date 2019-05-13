@@ -1,4 +1,4 @@
-package com.example.android.movie.register
+package com.example.android.movie.ui.register
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.android.movie.R
-import com.example.android.movie.home.HomeActivity
-import com.example.android.movie.utils.TextWatcherAdapter
+import com.example.android.movie.ui.main.HomeActivity
+import com.example.android.movie.ui.widget.TextWatcherAdapter
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
 
@@ -47,7 +47,9 @@ class LoginFragment : Fragment() {
         })
 
         sign_up.setOnClickListener {
-            fragmentManager?.beginTransaction()?.replace(R.id.container, SignUpFragment())?.commit()
+            fragmentManager?.beginTransaction()?.replace(R.id.container,
+                SignUpFragment()
+            )?.commit()
         }
 
         btn_login.setOnClickListener {

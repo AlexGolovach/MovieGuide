@@ -1,10 +1,10 @@
-package com.example.android.movie
+package com.example.android.movie.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
-import com.example.android.movie.register.RegisterActivity
+import com.example.android.movie.ui.register.RegisterActivity
 
 class SplashScreen : AppCompatActivity() {
 

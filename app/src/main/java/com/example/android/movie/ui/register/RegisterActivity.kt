@@ -1,4 +1,4 @@
-package com.example.android.movie.register
+package com.example.android.movie.ui.register
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -15,6 +15,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun showFragment() {
-        supportFragmentManager.beginTransaction().replace(R.id.container, LoginFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container,
+            LoginFragment()
+        ).commit()
     }
 }

@@ -1,4 +1,4 @@
-package com.example.android.movie.register
+package com.example.android.movie.ui.register
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -41,7 +41,9 @@ class SignUpFragment : Fragment() {
     }
 
     private fun startFragment() {
-        fragmentManager?.beginTransaction()?.replace(R.id.container, LoginFragment())
+        fragmentManager?.beginTransaction()?.replace(R.id.container,
+            LoginFragment()
+        )
             ?.commit()
     }
 }
