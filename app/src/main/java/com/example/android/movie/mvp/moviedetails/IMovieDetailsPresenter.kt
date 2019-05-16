@@ -2,11 +2,11 @@ package com.example.android.movie.mvp.moviedetails
 
 interface IMovieDetailsPresenter{
 
-    fun onDownloadMovieDetails(movieId: Long)
+    fun onDownloadMovieDetails(movieId: Int)
 
-    fun onDownloadActorSquad(movieId: Long)
+    fun onDownloadActorSquad(movieId: Int)
 
-    fun onDownloadRecommendedMovies(movieId: Long)
+    fun onDownloadRecommendedMovies(movieId: Int)
 
     fun onDestroy()
 }

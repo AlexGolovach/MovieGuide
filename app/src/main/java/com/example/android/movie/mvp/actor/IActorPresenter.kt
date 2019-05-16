@@ -2,11 +2,11 @@ package com.example.android.movie.mvp.actor
 
 interface IActorPresenter{
 
-    fun onDownloadActorDetails(actorId: Long)
+    fun onDownloadActorDetails(actorId: Int)
 
-    fun onDownloadImageURLs(actorId: Long)
+    fun onDownloadImageURLs(actorId: Int)
 
-    fun onDownloadActorMovies(actorId: Long)
+    fun onDownloadActorMovies(actorId: Int)
 
     fun onDestroy()
 }

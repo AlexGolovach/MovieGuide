@@ -1,3 +1,10 @@
 package com.example.android.network.models
 
-data class Genres(val id: Int, val genre: String)
+import com.google.gson.annotations.SerializedName
+
+data class Genres(
+    @SerializedName("id")
+    val id: Int?,
+    @SerializedName("name")
+    val genre: String?
+)

@@ -2,7 +2,6 @@ package com.example.android.movie.ui.main.moviedetails
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
@@ -15,8 +14,10 @@ import com.example.android.movie.mvp.moviedetails.IMovieDetailsPresenter
 import com.example.android.movie.mvp.moviedetails.IMovieDetailsView
 import com.example.android.movie.ui.main.actor.ActorActivity
 import com.example.android.network.models.movie.Movie
-import com.example.android.network.models.movie.MovieActorSquad
-import com.example.android.network.models.movie.MovieDetails
+import com.example.android.network.models.movie.MovieList
+import com.example.android.network.models.moviesquad.MovieActorSquad
+import com.example.android.network.models.moviedetails.MovieDetails
+import com.example.android.network.models.moviesquad.Cast
 import kotlinx.android.synthetic.main.activity_movie_details.*
 import java.lang.NullPointerException
 
@@ -43,7 +44,7 @@ class MovieDetailsActivity : AppCompatActivity(),
     }
 
     private fun getData() {
-        val movieId = intent.getLongExtra("MOVIE_ID", 0)
+        val movieId = intent.getIntExtra("MOVIE_ID", 0)
 
         movieDetailsPresenter.onDownloadMovieDetails(movieId)
         movieDetailsPresenter.onDownloadActorSquad(movieId)
@@ -59,7 +60,7 @@ class MovieDetailsActivity : AppCompatActivity(),
             addItemDecoration(DividerItemDecoration(context, HORIZONTAL))
 
             val listener = object : MovieActorsAdapter.Listener {
-                override fun onItemClicked(actor: MovieActorSquad) {
+                override fun onItemClicked(actor: Cast) {
                     val intent = Intent(this@MovieDetailsActivity, ActorActivity::class.java)
 
                     intent.putExtra("ACTOR_ID", actor.id)
@@ -97,16 +98,16 @@ class MovieDetailsActivity : AppCompatActivity(),
     }
 
     override fun onDownloadResultDetails(movie: MovieDetails, poster: Bitmap) {
-        movie_title_text.text = movie.movie.title
-        movie_description_text.text = movie.movie.description
+        movie_title_text.text = movie.title
+        movie_description_text.text = movie.description
         movie_poster_image.setImageBitmap(poster)
     }
 
-    override fun onDownloadActorSquad(actorSquad: List<MovieActorSquad>) {
+    override fun onDownloadActorSquad(actorSquad: MovieActorSquad) {
         movieActorsAdapter.setItems(actorSquad)
     }
 
-    override fun onDownloadRecommendedMovies(movies: List<Movie>) {
+    override fun onDownloadRecommendedMovies(movies: MovieList) {
         recommendedMoviesAdapter.setItems(movies)
     }
 

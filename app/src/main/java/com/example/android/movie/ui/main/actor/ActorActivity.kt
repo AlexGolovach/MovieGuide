@@ -14,9 +14,11 @@ import com.example.android.movie.mvp.actor.IActorPresenter
 import com.example.android.movie.mvp.actor.IActorView
 import com.example.android.movie.ui.main.moviedetails.MovieDetailsActivity
 import com.example.android.movie.ui.widget.dialog.DialogImageFragment
-import com.example.android.network.getImageUrl
+import com.example.android.network.Converter.Companion.getImageUrl
 import com.example.android.network.models.actor.Actor
-import com.example.android.network.models.movie.Movie
+import com.example.android.network.models.actor.ActorImages
+import com.example.android.network.models.movie.actormovies.ActorMovies
+import com.example.android.network.models.movie.actormovies.Cast
 import kotlinx.android.synthetic.main.activity_actor.*
 
 class ActorActivity : AppCompatActivity(), IActorView {
@@ -43,7 +45,7 @@ class ActorActivity : AppCompatActivity(), IActorView {
     }
 
     private fun getData() {
-        val actorId = intent.getLongExtra("ACTOR_ID", 0)
+        val actorId = intent.getIntExtra("ACTOR_ID", 0)
 
         actorPresenter.onDownloadActorDetails(actorId)
         actorPresenter.onDownloadImageURLs(actorId)
@@ -59,8 +61,8 @@ class ActorActivity : AppCompatActivity(), IActorView {
             addItemDecoration(DividerItemDecoration(context, HORIZONTAL))
 
             val listener = object : ActorImageAdapter.Listener {
-                override fun onItemClicked(image: String) {
-                    val imageUrl = getImageUrl(image)
+                override fun onItemClicked(actorImage: ActorImages) {
+                    val imageUrl = actorImage.image?.let { getImageUrl(it) }
 
                     val bundle = Bundle()
                     bundle.putString("IMAGE_URL", imageUrl)
@@ -84,7 +86,7 @@ class ActorActivity : AppCompatActivity(), IActorView {
             addItemDecoration(DividerItemDecoration(context, HORIZONTAL))
 
             val listener = object : ActorMovieAdapter.Listener {
-                override fun onItemClicked(movie: Movie) {
+                override fun onItemClicked(movie: Cast) {
                     val intent = Intent(this@ActorActivity, MovieDetailsActivity::class.java)
 
                     intent.putExtra("MOVIE_ID", movie.id)
@@ -103,11 +105,11 @@ class ActorActivity : AppCompatActivity(), IActorView {
         actor_biography.text = actor.biography
     }
 
-    override fun onDownloadImageURLs(images: List<String>) {
+    override fun onDownloadImageURLs(images: List<ActorImages>) {
         actorImageAdapter.setItems(images)
     }
 
-    override fun onDownloadActorMovies(movies: List<Movie>) {
+    override fun onDownloadActorMovies(movies: ActorMovies) {
         actorMovieAdapter.setItems(movies)
     }
 

@@ -8,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.android.imageloader.Callback
 import com.example.android.movie.R
-import com.example.android.network.getImageUrl
-import com.example.android.network.models.movie.Movie
+import com.example.android.network.Converter.Companion.getImageUrl
+import com.example.android.network.models.movie.actormovies.ActorMovies
+import com.example.android.network.models.movie.actormovies.Cast
 import kotlinx.android.synthetic.main.item_view_actor_movie.view.*
 
-class ActorMovieAdapter(private var items: List<Movie> = listOf()) :
+class ActorMovieAdapter(private var items: ActorMovies = ActorMovies(emptyList(), emptyList(),0)) :
     RecyclerView.Adapter<ActorMovieAdapter.ViewHolder>() {
 
     var listener: Listener? = null
@@ -23,45 +24,47 @@ class ActorMovieAdapter(private var items: List<Movie> = listOf()) :
         val holder = ViewHolder(view)
 
         holder.itemView.setOnClickListener {
-            listener?.onItemClicked(items[holder.adapterPosition])
+            listener?.onItemClicked(items.cast[holder.adapterPosition])
         }
 
         return holder
     }
 
     override fun onBindViewHolder(holder: ActorMovieAdapter.ViewHolder, position: Int) {
-        val movie = items[position]
+        val movie = items.cast[position]
 
         holder.bind(movie)
     }
 
-    fun setItems(list: List<Movie>) {
+    fun setItems(list: ActorMovies) {
         items = list
         notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return items.cast.size
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(movie: Movie) {
-            val imageUrl = getImageUrl(movie.image)
+        fun bind(movie: Cast) {
+            val imageUrl = movie.image?.let { getImageUrl(it) }
 
-            ImageLoader.getInstance()?.load(imageUrl, object : Callback {
-                override fun onSuccess(url: String, bitmap: Bitmap) {
-                    if (imageUrl == url) {
-                        itemView.poster_movie_image.background = null
-                        itemView.poster_movie_image.setImageBitmap(bitmap)
+            imageUrl?.let {
+                ImageLoader.getInstance()?.load(it, object : Callback {
+                    override fun onSuccess(url: String, bitmap: Bitmap) {
+                        if (imageUrl == url) {
+                            itemView.poster_movie_image.background = null
+                            itemView.poster_movie_image.setImageBitmap(bitmap)
+                        }
                     }
-                }
 
-                override fun onError(url: String, throwable: Throwable) {
-                    if (imageUrl == url) {
-                        itemView.poster_movie_image.setImageResource(R.drawable.image_placeholder)
+                    override fun onError(url: String, throwable: Throwable) {
+                        if (imageUrl == url) {
+                            itemView.poster_movie_image.setImageResource(R.drawable.image_placeholder)
+                        }
                     }
-                }
-            })
+                })
+            }
 
             itemView.movie_title_text.text = movie.title
             itemView.movie_rating_text.text = movie.rating.toString()
@@ -70,6 +73,6 @@ class ActorMovieAdapter(private var items: List<Movie> = listOf()) :
 
     interface Listener {
 
-        fun onItemClicked(movie: Movie)
+        fun onItemClicked(movie: Cast)
     }
 }

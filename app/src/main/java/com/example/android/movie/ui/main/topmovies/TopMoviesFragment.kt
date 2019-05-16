@@ -15,6 +15,7 @@ import com.example.android.movie.mvp.topmovies.ITopMoviesPresenter
 import com.example.android.movie.mvp.topmovies.ITopMoviesView
 import com.example.android.movie.ui.main.moviedetails.MovieDetailsActivity
 import com.example.android.network.models.movie.Movie
+import com.example.android.network.models.movie.MovieList
 import kotlinx.android.synthetic.main.fragment_top_movies.*
 import java.lang.NullPointerException
 
@@ -70,7 +71,7 @@ class TopMoviesFragment : Fragment(), ITopMoviesView {
         progress_bar.visibility = View.VISIBLE
     }
 
-    override fun onDownloadResult(movies: List<Movie>) {
+    override fun onDownloadResult(movies: MovieList) {
         topAdapter.setItems(movies)
     }
 

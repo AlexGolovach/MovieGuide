@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.android.imageloader.Callback
 import com.example.android.movie.R
-import com.example.android.network.getImageUrl
+import com.example.android.network.Converter.Companion.getImageUrl
+import com.example.android.network.models.actor.ActorImages
 import kotlinx.android.synthetic.main.item_view_actor_image.view.*
 
-class ActorImageAdapter(private var items: List<String> = listOf()) :
+class ActorImageAdapter(private var items: List<ActorImages> = listOf()) :
     RecyclerView.Adapter<ActorImageAdapter.ViewHolder>() {
 
     var listener: Listener? = null
@@ -33,7 +34,7 @@ class ActorImageAdapter(private var items: List<String> = listOf()) :
         holder.bind(image)
     }
 
-    fun setItems(list: List<String>) {
+    fun setItems(list: List<ActorImages>) {
         items = list
         notifyDataSetChanged()
     }
@@ -43,28 +44,30 @@ class ActorImageAdapter(private var items: List<String> = listOf()) :
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(image: String) {
-            val imageUrl = getImageUrl(image)
+        fun bind(actorImage: ActorImages) {
+            val imageUrl = actorImage.image?.let { getImageUrl(it) }
 
-            ImageLoader.getInstance()?.load(imageUrl, object : Callback{
-                override fun onSuccess(url: String, bitmap: Bitmap) {
-                    if (imageUrl == url){
-                        itemView.actor_image.background = null
-                        itemView.actor_image.setImageBitmap(bitmap)
+            imageUrl?.let {
+                ImageLoader.getInstance()?.load(it, object : Callback{
+                    override fun onSuccess(url: String, bitmap: Bitmap) {
+                        if (imageUrl == url){
+                            itemView.actor_image.background = null
+                            itemView.actor_image.setImageBitmap(bitmap)
+                        }
                     }
-                }
 
-                override fun onError(url: String, throwable: Throwable) {
-                    if (imageUrl == url){
-                        itemView.actor_image.setImageResource(R.drawable.image_placeholder)
+                    override fun onError(url: String, throwable: Throwable) {
+                        if (imageUrl == url){
+                            itemView.actor_image.setImageResource(R.drawable.image_placeholder)
+                        }
                     }
-                }
-            })
+                })
+            }
         }
     }
 
     interface Listener {
 
-        fun onItemClicked(image: String)
+        fun onItemClicked(actorImage: ActorImages)
     }
 }

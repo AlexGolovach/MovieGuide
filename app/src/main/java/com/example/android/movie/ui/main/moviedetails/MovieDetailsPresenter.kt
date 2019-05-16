@@ -5,37 +5,39 @@ import android.graphics.Bitmap
 import com.example.android.imageloader.Callback
 import com.example.android.movie.mvp.moviedetails.IMovieDetailsPresenter
 import com.example.android.movie.mvp.moviedetails.IMovieDetailsView
+import com.example.android.network.Converter.Companion.getImageUrl
 import com.example.android.network.Injector
-import com.example.android.network.getImageUrl
-import com.example.android.network.models.movie.Movie
-import com.example.android.network.models.movie.MovieActorSquad
-import com.example.android.network.models.movie.MovieDetails
+import com.example.android.network.models.movie.MovieList
+import com.example.android.network.models.moviedetails.MovieDetails
+import com.example.android.network.models.moviesquad.MovieActorSquad
 import com.example.android.network.repository.actors.ActorsCallback
 import com.example.android.network.repository.movies.MoviesCallback
 
 class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
     IMovieDetailsPresenter {
 
-    override fun onDownloadMovieDetails(movieId: Long) {
+    override fun onDownloadMovieDetails(movieId: Int) {
 
         Injector.getMoviesRepositoryImpl()
             .getInformationAboutMovie(movieId, object :
                 MoviesCallback<MovieDetails> {
                 override fun onSuccess(result: MovieDetails) {
 
-                    val imageUrl = getImageUrl(result.movie.image)
+                    val imageUrl = result.image?.let { getImageUrl(it) }
 
-                    ImageLoader.getInstance()?.load(imageUrl, object : Callback {
-                        override fun onSuccess(url: String, bitmap: Bitmap) {
+                    imageUrl?.let {
+                        ImageLoader.getInstance()?.load(it, object : Callback {
+                            override fun onSuccess(url: String, bitmap: Bitmap) {
 
-                            iMovieDetailsView?.onDownloadResultDetails(result, bitmap)
-                            iMovieDetailsView?.hideLoading()
-                        }
+                                iMovieDetailsView?.onDownloadResultDetails(result, bitmap)
+                                iMovieDetailsView?.hideLoading()
+                            }
 
-                        override fun onError(url: String, throwable: Throwable) {
-                            iMovieDetailsView?.showLoading()
-                        }
-                    })
+                            override fun onError(url: String, throwable: Throwable) {
+                                iMovieDetailsView?.showLoading()
+                            }
+                        })
+                    }
                 }
 
                 override fun onError(throwable: Throwable) {
@@ -45,10 +47,10 @@ class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
             })
     }
 
-    override fun onDownloadActorSquad(movieId: Long) {
+    override fun onDownloadActorSquad(movieId: Int) {
         Injector.getActorsRepositoryImpl()
-            .getActorsSquad(movieId, object : ActorsCallback<List<MovieActorSquad>> {
-                override fun onSuccess(result: List<MovieActorSquad>) {
+            .getActorsSquad(movieId, object : ActorsCallback<MovieActorSquad> {
+                override fun onSuccess(result: MovieActorSquad) {
                     iMovieDetailsView?.onDownloadActorSquad(result)
                 }
 
@@ -58,9 +60,9 @@ class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
             })
     }
 
-    override fun onDownloadRecommendedMovies(movieId: Long) {
-        Injector.getMoviesRepositoryImpl().getRecommendedMoviesForMovie(movieId, object : MoviesCallback<List<Movie>>{
-            override fun onSuccess(result: List<Movie>) {
+    override fun onDownloadRecommendedMovies(movieId: Int) {
+        Injector.getMoviesRepositoryImpl().getRecommendedMoviesForMovie(movieId, object : MoviesCallback<MovieList>{
+            override fun onSuccess(result: MovieList) {
                 iMovieDetailsView?.onDownloadRecommendedMovies(result)
             }
 

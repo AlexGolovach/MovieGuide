@@ -12,7 +12,7 @@ import android.widget.Toast
 import com.example.android.movie.R
 import com.example.android.movie.mvp.search.ISearchMoviesPresenter
 import com.example.android.movie.mvp.search.ISearchMoviesView
-import com.example.android.network.models.movie.Movie
+import com.example.android.network.models.movie.MovieList
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment(), ISearchMoviesView {
@@ -48,7 +48,7 @@ class SearchFragment : Fragment(), ISearchMoviesView {
         }
     }
 
-    override fun onSearchResult(movies: List<Movie>) {
+    override fun onSearchResult(movies: MovieList) {
         searchResultAdapter.updateItems(movies)
     }
 
