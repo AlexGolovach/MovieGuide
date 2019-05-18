@@ -1,4 +1,4 @@
-package com.example.android.movie.ui.main.moviedetails
+package com.example.android.movie.ui.main.moviedetails.details
 
 import ImageLoader
 import android.graphics.Bitmap
@@ -28,13 +28,11 @@ class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
                     imageUrl?.let {
                         ImageLoader.getInstance()?.load(it, object : Callback {
                             override fun onSuccess(url: String, bitmap: Bitmap) {
-
                                 iMovieDetailsView?.onDownloadResultDetails(result, bitmap)
-                                iMovieDetailsView?.hideLoading()
                             }
 
                             override fun onError(url: String, throwable: Throwable) {
-                                iMovieDetailsView?.showLoading()
+                                iMovieDetailsView?.onDownloadDetailsError(throwable)
                             }
                         })
                     }
@@ -56,6 +54,7 @@ class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
 
                 override fun onError(throwable: Throwable) {
                     iMovieDetailsView?.onDownloadDetailsError(throwable)
+                    iMovieDetailsView?.showLoading()
                 }
             })
     }
@@ -64,10 +63,12 @@ class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
         Injector.getMoviesRepositoryImpl().getRecommendedMoviesForMovie(movieId, object : MoviesCallback<MovieList>{
             override fun onSuccess(result: MovieList) {
                 iMovieDetailsView?.onDownloadRecommendedMovies(result)
+                iMovieDetailsView?.hideLoading()
             }
 
             override fun onError(throwable: Throwable) {
                 iMovieDetailsView?.onDownloadDetailsError(throwable)
+                iMovieDetailsView?.showLoading()
             }
         })
     }

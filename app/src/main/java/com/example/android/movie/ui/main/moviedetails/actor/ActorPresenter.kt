@@ -1,4 +1,4 @@
-package com.example.android.movie.ui.main.actor
+package com.example.android.movie.ui.main.moviedetails.actor
 
 import ImageLoader
 import android.graphics.Bitmap
@@ -45,8 +45,8 @@ class ActorPresenter(private var iActorView: IActorView?) :
 
     override fun onDownloadImageURLs(actorId: Int) {
         Injector.getActorsRepositoryImpl()
-            .getActorImages(actorId, object : ActorsCallback<List<ActorImages>> {
-                override fun onSuccess(result: List<ActorImages>) {
+            .getActorImages(actorId, object : ActorsCallback<ActorImages> {
+                override fun onSuccess(result: ActorImages) {
                     iActorView?.onDownloadImageURLs(result)
                 }
 

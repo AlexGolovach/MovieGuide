@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,7 @@ class DialogImageFragment : DialogFragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         dialogImagePresenter = DialogImagePresenter(this)
 
@@ -36,8 +37,7 @@ class DialogImageFragment : DialogFragment(),
     }
 
     private fun getImage() {
-        val bundle = arguments
-        val imageUrl = bundle?.getString("IMAGE_URL")
+        val imageUrl = arguments?.getString("IMAGE_URL")
 
         if (imageUrl != null) {
             dialogImagePresenter.onDownloadImage(imageUrl)

@@ -1,4 +1,4 @@
-package com.example.android.movie.ui.main.moviedetails
+package com.example.android.movie.ui.main.moviedetails.details
 
 import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
@@ -22,10 +22,13 @@ class MovieActorsAdapter(
 
     var listener: Listener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): MovieActorsAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_view_actor, parent, false)
-        val holder = ViewHolder(view)
+        val holder =
+            ViewHolder(
+                view
+            )
 
         holder.itemView.setOnClickListener {
             listener?.onItemClicked(items.cast[holder.adapterPosition])
@@ -34,7 +37,7 @@ class MovieActorsAdapter(
         return holder
     }
 
-    override fun onBindViewHolder(holder: MovieActorsAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val actor = items.cast[position]
 
         holder.bind(actor)

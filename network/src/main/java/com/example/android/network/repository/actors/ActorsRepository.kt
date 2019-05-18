@@ -8,7 +8,7 @@ interface ActorsRepository{
 
     fun getInformationAboutActor(actorId: Int, callback: ActorsCallback<Actor>)
 
-    fun getActorImages(actorId: Int, callback: ActorsCallback<List<ActorImages>>)
+    fun getActorImages(actorId: Int, callback: ActorsCallback<ActorImages>)
 
     fun getActorsSquad(movieId: Int, callback: ActorsCallback<MovieActorSquad>)
 }

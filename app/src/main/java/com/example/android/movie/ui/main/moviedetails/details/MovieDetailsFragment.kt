@@ -1,42 +1,49 @@
-package com.example.android.movie.ui.main.moviedetails
+package com.example.android.movie.ui.main.moviedetails.details
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView.HORIZONTAL
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.example.android.movie.R
 import com.example.android.movie.mvp.moviedetails.IMovieDetailsPresenter
 import com.example.android.movie.mvp.moviedetails.IMovieDetailsView
-import com.example.android.movie.ui.main.actor.ActorActivity
+import com.example.android.movie.ui.getBundleWithId
+import com.example.android.movie.ui.main.moviedetails.actor.ActorFragment
 import com.example.android.network.models.movie.Movie
 import com.example.android.network.models.movie.MovieList
-import com.example.android.network.models.moviesquad.MovieActorSquad
 import com.example.android.network.models.moviedetails.MovieDetails
 import com.example.android.network.models.moviesquad.Cast
-import kotlinx.android.synthetic.main.activity_movie_details.*
-import java.lang.NullPointerException
+import com.example.android.network.models.moviesquad.MovieActorSquad
+import kotlinx.android.synthetic.main.fragment_movie_details.*
 
-class MovieDetailsActivity : AppCompatActivity(),
-    IMovieDetailsView {
+class MovieDetailsFragment : Fragment(), IMovieDetailsView {
 
     private lateinit var movieDetailsPresenter: IMovieDetailsPresenter
     private lateinit var movieActorsAdapter: MovieActorsAdapter
     private lateinit var recommendedMoviesAdapter: RecommendedMoviesAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.fragment_movie_details, container, false)
 
-        setContentView(R.layout.activity_movie_details)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        movieActorsAdapter = MovieActorsAdapter()
-        recommendedMoviesAdapter = RecommendedMoviesAdapter()
+        movieActorsAdapter =
+            MovieActorsAdapter()
+        recommendedMoviesAdapter =
+            RecommendedMoviesAdapter()
 
-        movieDetailsPresenter = MovieDetailsPresenter(this)
+        movieDetailsPresenter =
+            MovieDetailsPresenter(this)
 
         getData()
         initRecyclerActors()
@@ -44,28 +51,33 @@ class MovieDetailsActivity : AppCompatActivity(),
     }
 
     private fun getData() {
-        val movieId = intent.getIntExtra("MOVIE_ID", 0)
+        val movieId = arguments?.getInt("MOVIE_ID")
 
-        movieDetailsPresenter.onDownloadMovieDetails(movieId)
-        movieDetailsPresenter.onDownloadActorSquad(movieId)
-        movieDetailsPresenter.onDownloadRecommendedMovies(movieId)
+        movieId?.let {
+            movieDetailsPresenter.onDownloadMovieDetails(it)
+            movieDetailsPresenter.onDownloadActorSquad(it)
+            movieDetailsPresenter.onDownloadRecommendedMovies(it)
+        }
     }
 
     private fun initRecyclerActors() {
         val context = recycler_view_actor.context
 
         recycler_view_actor.apply {
-            layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             setHasFixedSize(true)
-            addItemDecoration(DividerItemDecoration(context, HORIZONTAL))
+            addItemDecoration(DividerItemDecoration(context, RecyclerView.HORIZONTAL))
 
             val listener = object : MovieActorsAdapter.Listener {
                 override fun onItemClicked(actor: Cast) {
-                    val intent = Intent(this@MovieDetailsActivity, ActorActivity::class.java)
 
-                    intent.putExtra("ACTOR_ID", actor.id)
+                    val actorFragment = ActorFragment()
+                    actorFragment.arguments = getBundleWithId("ACTOR_ID", actor.id)
 
-                    startActivity(intent)
+                    fragmentManager?.beginTransaction()
+                        ?.addToBackStack(ActorFragment::class.java.name)
+                        ?.replace(R.id.container, actorFragment, ActorFragment::class.java.name)
+                        ?.commit()
                 }
             }
 
@@ -78,17 +90,24 @@ class MovieDetailsActivity : AppCompatActivity(),
         val context = recycler_view_recommended_movies.context
 
         recycler_view_recommended_movies.apply {
-            layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             setHasFixedSize(true)
-            addItemDecoration(DividerItemDecoration(context, HORIZONTAL))
+            addItemDecoration(DividerItemDecoration(context, RecyclerView.HORIZONTAL))
 
             val listener = object : RecommendedMoviesAdapter.Listener {
                 override fun onItemClicked(movie: Movie) {
-                    val intent = Intent(this@MovieDetailsActivity, MovieDetailsActivity::class.java)
 
-                    intent.putExtra("MOVIE_ID", movie.id)
+                    val movieDetailsFragment = MovieDetailsFragment()
+                    movieDetailsFragment.arguments = getBundleWithId("MOVIE_ID", movie.id)
 
-                    startActivity(intent)
+                    fragmentManager?.beginTransaction()
+                        ?.addToBackStack(MovieDetailsFragment::class.java.name)
+                        ?.replace(
+                            R.id.container,
+                            movieDetailsFragment,
+                            MovieDetailsFragment::class.java.name
+                        )
+                        ?.commit()
                 }
             }
 
@@ -113,7 +132,7 @@ class MovieDetailsActivity : AppCompatActivity(),
 
     override fun onDownloadDetailsError(throwable: Throwable) {
         if (throwable is NullPointerException) {
-            Toast.makeText(this, throwable.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, throwable.message, Toast.LENGTH_SHORT).show()
         }
     }
 

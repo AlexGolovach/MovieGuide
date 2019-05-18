@@ -1,5 +1,6 @@
-package com.example.android.movie.ui.main.moviedetails
+package com.example.android.movie.ui.main.moviedetails.actor
 
+import ImageLoader
 import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,48 +9,44 @@ import android.view.ViewGroup
 import com.example.android.imageloader.Callback
 import com.example.android.movie.R
 import com.example.android.network.Converter.Companion.getImageUrl
-import com.example.android.network.models.movie.Movie
-import com.example.android.network.models.movie.MovieList
-import kotlinx.android.synthetic.main.item_view_recommended_movie.view.*
+import com.example.android.network.models.movie.actormovies.ActorMovies
+import com.example.android.network.models.movie.actormovies.Cast
+import kotlinx.android.synthetic.main.item_view_actor_movie.view.*
 
-class RecommendedMoviesAdapter(private var items: MovieList = MovieList(0, 0, 0, emptyList())) :
-    RecyclerView.Adapter<RecommendedMoviesAdapter.ViewHolder>() {
+class ActorMovieAdapter(private var items: ActorMovies = ActorMovies(emptyList(), emptyList(),0)) :
+    RecyclerView.Adapter<ActorMovieAdapter.ViewHolder>() {
 
     var listener: Listener? = null
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        p1: Int
-    ): RecommendedMoviesAdapter.ViewHolder {
-
+    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ActorMovieAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_view_recommended_movie, parent, false)
+            .inflate(R.layout.item_view_actor_movie, parent, false)
         val holder = ViewHolder(view)
 
         holder.itemView.setOnClickListener {
-            listener?.onItemClicked(items.results[holder.adapterPosition])
+            listener?.onItemClicked(items.cast[holder.adapterPosition])
         }
 
         return holder
     }
 
-    override fun onBindViewHolder(holder: RecommendedMoviesAdapter.ViewHolder, position: Int) {
-        val movie = items.results[position]
+    override fun onBindViewHolder(holder: ActorMovieAdapter.ViewHolder, position: Int) {
+        val movie = items.cast[position]
 
         holder.bind(movie)
     }
 
-    fun setItems(list: MovieList) {
+    fun setItems(list: ActorMovies) {
         items = list
         notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        return items.results.size
+        return items.cast.size
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(movie: Movie) {
+        fun bind(movie: Cast) {
             val imageUrl = movie.image?.let { getImageUrl(it) }
 
             imageUrl?.let {
@@ -76,6 +73,6 @@ class RecommendedMoviesAdapter(private var items: MovieList = MovieList(0, 0, 0,
 
     interface Listener {
 
-        fun onItemClicked(movie: Movie)
+        fun onItemClicked(movie: Cast)
     }
 }

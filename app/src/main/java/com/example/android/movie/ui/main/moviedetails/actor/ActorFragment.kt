@@ -1,27 +1,30 @@
-package com.example.android.movie.ui.main.actor
+package com.example.android.movie.ui.main.moviedetails.actor
 
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView.HORIZONTAL
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.example.android.movie.R
 import com.example.android.movie.mvp.actor.IActorPresenter
 import com.example.android.movie.mvp.actor.IActorView
-import com.example.android.movie.ui.main.moviedetails.MovieDetailsActivity
+import com.example.android.movie.ui.main.moviedetails.DetailsActivity
 import com.example.android.movie.ui.widget.dialog.DialogImageFragment
 import com.example.android.network.Converter.Companion.getImageUrl
 import com.example.android.network.models.actor.Actor
 import com.example.android.network.models.actor.ActorImages
+import com.example.android.network.models.actor.Image
 import com.example.android.network.models.movie.actormovies.ActorMovies
 import com.example.android.network.models.movie.actormovies.Cast
-import kotlinx.android.synthetic.main.activity_actor.*
+import kotlinx.android.synthetic.main.fragment_actor.*
 
-class ActorActivity : AppCompatActivity(), IActorView {
+class ActorFragment : Fragment(), IActorView {
 
     private lateinit var actorPresenter: IActorPresenter
     private lateinit var actorImageAdapter: ActorImageAdapter
@@ -29,10 +32,14 @@ class ActorActivity : AppCompatActivity(), IActorView {
 
     private var dialogImage = DialogImageFragment()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.fragment_actor, container, false)
 
-        setContentView(R.layout.activity_actor)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         actorImageAdapter = ActorImageAdapter()
         actorMovieAdapter = ActorMovieAdapter()
@@ -45,11 +52,13 @@ class ActorActivity : AppCompatActivity(), IActorView {
     }
 
     private fun getData() {
-        val actorId = intent.getIntExtra("ACTOR_ID", 0)
+        val actorId = arguments?.getInt("ACTOR_ID")
 
-        actorPresenter.onDownloadActorDetails(actorId)
-        actorPresenter.onDownloadImageURLs(actorId)
-        actorPresenter.onDownloadActorMovies(actorId)
+        actorId?.let {
+            actorPresenter.onDownloadActorDetails(it)
+            actorPresenter.onDownloadImageURLs(it)
+            actorPresenter.onDownloadActorMovies(it)
+        }
     }
 
     private fun initRecyclerImages() {
@@ -61,14 +70,14 @@ class ActorActivity : AppCompatActivity(), IActorView {
             addItemDecoration(DividerItemDecoration(context, HORIZONTAL))
 
             val listener = object : ActorImageAdapter.Listener {
-                override fun onItemClicked(actorImage: ActorImages) {
+                override fun onItemClicked(actorImage: Image) {
                     val imageUrl = actorImage.image?.let { getImageUrl(it) }
 
                     val bundle = Bundle()
                     bundle.putString("IMAGE_URL", imageUrl)
 
                     dialogImage.arguments = bundle
-                    dialogImage.show(supportFragmentManager, "dialog_image")
+                    dialogImage.show(fragmentManager, "dialog_image")
                 }
             }
 
@@ -87,7 +96,7 @@ class ActorActivity : AppCompatActivity(), IActorView {
 
             val listener = object : ActorMovieAdapter.Listener {
                 override fun onItemClicked(movie: Cast) {
-                    val intent = Intent(this@ActorActivity, MovieDetailsActivity::class.java)
+                    val intent = Intent(activity, DetailsActivity::class.java)
 
                     intent.putExtra("MOVIE_ID", movie.id)
 
@@ -105,7 +114,7 @@ class ActorActivity : AppCompatActivity(), IActorView {
         actor_biography.text = actor.biography
     }
 
-    override fun onDownloadImageURLs(images: List<ActorImages>) {
+    override fun onDownloadImageURLs(images: ActorImages) {
         actorImageAdapter.setItems(images)
     }
 
@@ -115,7 +124,7 @@ class ActorActivity : AppCompatActivity(), IActorView {
 
     override fun onDownloadDetailsError(throwable: Throwable) {
         if (throwable is NullPointerException) {
-            Toast.makeText(this, throwable.message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, throwable.message, Toast.LENGTH_SHORT).show()
         }
     }
 

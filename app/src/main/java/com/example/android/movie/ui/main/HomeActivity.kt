@@ -23,7 +23,8 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         setContentView(R.layout.activity_home)
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, TopMoviesFragment())
+            .addToBackStack(TopMoviesFragment::javaClass.name)
+            .replace(R.id.container, TopMoviesFragment(), TopMoviesFragment::class.java.name)
             .commit()
 
         setSupportActionBar(toolbar)
@@ -77,7 +78,8 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             when (it.itemId) {
                 R.id.action_search -> {
                     supportFragmentManager.beginTransaction()
-                        .add(R.id.container, SearchFragment())
+                        .addToBackStack(SearchFragment::class.java.name)
+                        .replace(R.id.container, SearchFragment(),SearchFragment::class.java.name)
                         .commit()
 
                     true

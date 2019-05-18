@@ -11,8 +11,6 @@ import java.lang.NullPointerException
 
 class ActorsRepositoryImpl : ActorsRepository {
 
-    private val actorImagesList = mutableListOf<ActorImages>()
-
     private lateinit var url: String
 
     override fun getInformationAboutActor(actorId: Int, callback: ActorsCallback<Actor>) {
@@ -33,20 +31,13 @@ class ActorsRepositoryImpl : ActorsRepository {
         })
     }
 
-    override fun getActorImages(actorId: Int, callback: ActorsCallback<List<ActorImages>>) {
-        actorImagesList.clear()
+    override fun getActorImages(actorId: Int, callback: ActorsCallback<ActorImages>) {
 
         url = "https://api.themoviedb.org/3/person/$actorId/images?api_key=${Constants.API_KEY}"
 
         HttpRequest.getInstance()?.load(url, object : Callback {
             override fun onSuccess(json: String) {
-                actorImagesList.add(Converter.parsingJson(json, ActorImages::class.java))
-
-                if (actorImagesList.size != 0) {
-                    callback.onSuccess(actorImagesList)
-                } else {
-                    callback.onError(NullPointerException("We have some problems with download profiles"))
-                }
+                callback.onSuccess(Converter.parsingJson(json, ActorImages::class.java))
             }
 
             override fun onError(throwable: Throwable) {

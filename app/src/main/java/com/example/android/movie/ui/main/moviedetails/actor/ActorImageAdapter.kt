@@ -1,4 +1,4 @@
-package com.example.android.movie.ui.main.actor
+package com.example.android.movie.ui.main.moviedetails.actor
 
 import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
@@ -9,9 +9,10 @@ import com.example.android.imageloader.Callback
 import com.example.android.movie.R
 import com.example.android.network.Converter.Companion.getImageUrl
 import com.example.android.network.models.actor.ActorImages
+import com.example.android.network.models.actor.Image
 import kotlinx.android.synthetic.main.item_view_actor_image.view.*
 
-class ActorImageAdapter(private var items: List<ActorImages> = listOf()) :
+class ActorImageAdapter(private var items: ActorImages = ActorImages(emptyList(),0)) :
     RecyclerView.Adapter<ActorImageAdapter.ViewHolder>() {
 
     var listener: Listener? = null
@@ -22,29 +23,29 @@ class ActorImageAdapter(private var items: List<ActorImages> = listOf()) :
         val holder = ViewHolder(view)
 
         holder.itemView.setOnClickListener {
-            listener?.onItemClicked(items[holder.adapterPosition])
+            listener?.onItemClicked(items.profiles[holder.adapterPosition])
         }
 
         return holder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val image = items[position]
+        val image = items.profiles[position]
 
         holder.bind(image)
     }
 
-    fun setItems(list: List<ActorImages>) {
+    fun setItems(list: ActorImages) {
         items = list
         notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return items.profiles.size
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun bind(actorImage: ActorImages) {
+        fun bind(actorImage: Image) {
             val imageUrl = actorImage.image?.let { getImageUrl(it) }
 
             imageUrl?.let {
@@ -68,6 +69,6 @@ class ActorImageAdapter(private var items: List<ActorImages> = listOf()) :
 
     interface Listener {
 
-        fun onItemClicked(actorImage: ActorImages)
+        fun onItemClicked(actorImage: Image)
     }
 }

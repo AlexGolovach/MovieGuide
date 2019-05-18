@@ -10,7 +10,7 @@ interface IActorView: ILoadingView {
 
     fun onDownloadResultDetails(actor: Actor, image: Bitmap)
 
-    fun onDownloadImageURLs(images: List<ActorImages>)
+    fun onDownloadImageURLs(images: ActorImages)
 
     fun onDownloadActorMovies(movies: ActorMovies)
 
