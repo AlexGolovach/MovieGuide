@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@color/grayish</item>
+        <item name="android:textColor">@color/gray_material_design</item>
     </style>
 
     <style name="SplashTeam" parent="Theme.AppCompat.Light.NoActionBar">

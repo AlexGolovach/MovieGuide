@@ -15,4 +15,10 @@
     <string name="movie_not_found">Movie not found</string>
     <string name="movies_with_actor">Movies with actor:</string>
     <string name="recommended_movies">Recommended movies:</string>
+    <string name="remember_me">Remember me</string>
+    <string name="videos">Videos:</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="release_date">Release Date:</string>
+    <string name="runtime">Runtime:</string>
 </resources>
