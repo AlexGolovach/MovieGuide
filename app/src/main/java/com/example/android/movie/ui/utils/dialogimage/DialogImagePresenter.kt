@@ -1,4 +1,4 @@
-package com.example.android.movie.ui.widget.dialog
+package com.example.android.movie.ui.utils.dialogimage
 
 import ImageLoader
 import android.graphics.Bitmap

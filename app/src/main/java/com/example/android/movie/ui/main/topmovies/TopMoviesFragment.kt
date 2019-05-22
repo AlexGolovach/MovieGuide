@@ -50,7 +50,6 @@ class TopMoviesFragment : Fragment(), ITopMoviesView {
         recycler_view.apply {
             layoutManager = LinearLayoutManager(context, VERTICAL, false)
             setHasFixedSize(true)
-            addItemDecoration(DividerItemDecoration(context, VERTICAL))
 
             val listener = object : TopMoviesAdapter.Listener {
                 override fun onItemClicked(movie: Movie) {
@@ -82,8 +81,10 @@ class TopMoviesFragment : Fragment(), ITopMoviesView {
     }
 
     override fun hideLoading() {
-        progress_bar.visibility = View.GONE
-        recycler_view.visibility = View.VISIBLE
+        if (progress_bar.visibility == View.VISIBLE) {
+            progress_bar.visibility = View.GONE
+            recycler_view.visibility = View.VISIBLE
+        }
     }
 
     override fun onDestroy() {

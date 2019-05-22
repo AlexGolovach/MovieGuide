@@ -12,7 +12,7 @@
     <item android:state_enabled="true">
         <ripple android:color="?attr/colorControlHighlight" tools:ignore="NewApi">
             <item>
-                <shape android:shape="rectangle" android:tint="@color/blue">
+                <shape android:shape="rectangle" android:tint="@color/green">
                     <corners android:radius="20dp" />
                 </shape>
             </item>

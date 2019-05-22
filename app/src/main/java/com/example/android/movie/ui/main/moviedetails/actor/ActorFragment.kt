@@ -15,13 +15,14 @@ import com.example.android.movie.R
 import com.example.android.movie.mvp.actor.IActorPresenter
 import com.example.android.movie.mvp.actor.IActorView
 import com.example.android.movie.ui.main.moviedetails.DetailsActivity
-import com.example.android.movie.ui.widget.dialog.DialogImageFragment
+import com.example.android.movie.ui.utils.dialogimage.DialogImageFragment
 import com.example.android.network.Converter.Companion.getImageUrl
 import com.example.android.network.models.actor.Actor
 import com.example.android.network.models.actor.ActorImages
 import com.example.android.network.models.actor.Image
 import com.example.android.network.models.movie.actormovies.ActorMovies
 import com.example.android.network.models.movie.actormovies.Cast
+import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.fragment_actor.*
 
 class ActorFragment : Fragment(), IActorView {
@@ -67,7 +68,6 @@ class ActorFragment : Fragment(), IActorView {
         recycler_view_actor_images.apply {
             layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
             setHasFixedSize(true)
-            addItemDecoration(DividerItemDecoration(context, HORIZONTAL))
 
             val listener = object : ActorImageAdapter.Listener {
                 override fun onItemClicked(actorImage: Image) {
@@ -92,7 +92,6 @@ class ActorFragment : Fragment(), IActorView {
         recycler_view_actor_movies.apply {
             layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
             setHasFixedSize(true)
-            addItemDecoration(DividerItemDecoration(context, HORIZONTAL))
 
             val listener = object : ActorMovieAdapter.Listener {
                 override fun onItemClicked(movie: Cast) {
@@ -110,7 +109,10 @@ class ActorFragment : Fragment(), IActorView {
     }
 
     override fun onDownloadResultDetails(actor: Actor, image: Bitmap) {
-        actor_image.setImageBitmap(image)
+        activity?.apply {
+            poster_image?.setImageBitmap(image)
+            collapsing_toolbar.title = actor.name
+        }
         actor_biography.text = actor.biography
     }
 
@@ -130,6 +132,7 @@ class ActorFragment : Fragment(), IActorView {
 
     override fun showLoading() {
         progress_bar.visibility = View.VISIBLE
+        activity?.collapsing_toolbar?.visibility = View.GONE
     }
 
     override fun hideLoading() {
@@ -139,6 +142,7 @@ class ActorFragment : Fragment(), IActorView {
         recycler_view_actor_images.visibility = View.VISIBLE
         actor_movies_text.visibility = View.VISIBLE
         recycler_view_actor_movies.visibility = View.VISIBLE
+        activity?.collapsing_toolbar?.visibility = View.VISIBLE
     }
 
     override fun onDestroy() {

@@ -8,12 +8,13 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import com.example.android.movie.R
-import com.example.android.movie.mvp.search.ISearchMoviesPresenter
 import com.example.android.movie.ui.main.search.SearchFragment
-import com.example.android.movie.ui.main.search.SearchPresenter
 import com.example.android.movie.ui.main.topmovies.TopMoviesFragment
+import com.example.android.movie.ui.profile.ProfileActivity
 import com.example.android.movie.ui.register.RegisterActivity
+import com.example.android.movie.ui.utils.AccountOperation
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.drawer_header.view.*
 
 class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
@@ -32,6 +33,34 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         initDrawer()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_search, menu)
+
+        val menuItem = menu?.findItem(R.id.action_search)
+        val searchView = menuItem?.actionView as SearchView
+        searchView.setOnQueryTextListener(this)
+        searchView.queryHint = getString(R.string.search)
+
+        menuItem.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_search -> {
+                    supportFragmentManager.beginTransaction()
+                        .addToBackStack(SearchFragment::class.java.name)
+                        .replace(R.id.container, SearchFragment(), SearchFragment::class.java.name)
+                        .commit()
+
+                    true
+                }
+
+                else -> {
+                    false
+                }
+            }
+        }
+
+        return true
+    }
+
     private fun initDrawer() {
         val toggle = ActionBarDrawerToggle(
             this,
@@ -44,11 +73,17 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         toggle.syncState()
 
         val header = navigation_view.getHeaderView(0)
+        header.header_username.text = AccountOperation.getAccount().login
 
         navigation_view.setNavigationItemSelectedListener {
             when (it.itemId) {
+                R.id.profile -> {
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                }
                 R.id.exit -> {
                     startActivity(Intent(this, RegisterActivity::class.java))
+
+                    AccountOperation.deleteAccountInformation()
 
                     finish()
                 }
@@ -64,34 +99,6 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         } else {
             super.onBackPressed()
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_search, menu)
-
-        val menuItem = menu?.findItem(R.id.action_search)
-        val searchView = menuItem?.actionView as SearchView
-        searchView.setOnQueryTextListener(this)
-        searchView.queryHint = getString(R.string.search)
-
-        menuItem.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_search -> {
-                    supportFragmentManager.beginTransaction()
-                        .addToBackStack(SearchFragment::class.java.name)
-                        .replace(R.id.container, SearchFragment(),SearchFragment::class.java.name)
-                        .commit()
-
-                    true
-                }
-
-                else -> {
-                    false
-                }
-            }
-        }
-
-        return true
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {

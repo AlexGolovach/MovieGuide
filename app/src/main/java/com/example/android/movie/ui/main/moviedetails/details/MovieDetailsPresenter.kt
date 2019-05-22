@@ -7,14 +7,18 @@ import com.example.android.movie.mvp.moviedetails.IMovieDetailsPresenter
 import com.example.android.movie.mvp.moviedetails.IMovieDetailsView
 import com.example.android.network.Converter.Companion.getImageUrl
 import com.example.android.network.Injector
+import com.example.android.network.models.movievideo.MovieVideos
 import com.example.android.network.models.movie.MovieList
 import com.example.android.network.models.moviedetails.MovieDetails
 import com.example.android.network.models.moviesquad.MovieActorSquad
 import com.example.android.network.repository.actors.ActorsCallback
 import com.example.android.network.repository.movies.MoviesCallback
+import com.example.android.network.repository.videos.VideosCallback
 
 class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
     IMovieDetailsPresenter {
+
+    private var youTubeVideos = mutableListOf<String>()
 
     override fun onDownloadMovieDetails(movieId: Int) {
 
@@ -60,14 +64,34 @@ class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
     }
 
     override fun onDownloadRecommendedMovies(movieId: Int) {
-        Injector.getMoviesRepositoryImpl().getRecommendedMoviesForMovie(movieId, object : MoviesCallback<MovieList>{
-            override fun onSuccess(result: MovieList) {
-                iMovieDetailsView?.onDownloadRecommendedMovies(result)
+        Injector.getMoviesRepositoryImpl()
+            .getRecommendedMoviesForMovie(movieId, object : MoviesCallback<MovieList> {
+                override fun onSuccess(result: MovieList) {
+                    iMovieDetailsView?.onDownloadRecommendedMovies(result)
+                    iMovieDetailsView?.hideLoading()
+                }
+
+                override fun onError(throwable: Throwable) {
+                    iMovieDetailsView?.onDownloadDetailsError(throwable)
+                    iMovieDetailsView?.showLoading()
+                }
+            })
+    }
+
+    override fun onDownloadVideo(movieId: Int) {
+        Injector.getVideosRepositoryImpl().getVideosForMovie(movieId, object : VideosCallback {
+            override fun onSuccess(result: MovieVideos) {
+                youTubeVideos.clear()
+
+                for (i in 0 until result.results.size) {
+                    youTubeVideos.add("<iframe width=\"100%\" height=\"100%\" src=\"https://www.youtube.com/embed/${result.results[i].key}\" frameborder=\"0\" allowfullscreen></iframe>")
+                }
+
+                iMovieDetailsView?.onDownloadVideo(youTubeVideos)
                 iMovieDetailsView?.hideLoading()
             }
 
-            override fun onError(throwable: Throwable) {
-                iMovieDetailsView?.onDownloadDetailsError(throwable)
+            override fun onError(error: Throwable) {
                 iMovieDetailsView?.showLoading()
             }
         })

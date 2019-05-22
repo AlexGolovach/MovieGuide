@@ -12,13 +12,14 @@ import com.example.android.network.models.movie.Movie
 import com.example.android.network.models.movie.MovieList
 import kotlinx.android.synthetic.main.item_view_top_films.view.*
 
-class TopMoviesAdapter(private var items: MovieList = MovieList(0,0,0, emptyList())) :
+class TopMoviesAdapter(private var items: MovieList = MovieList(0, 0, 0, emptyList())) :
     RecyclerView.Adapter<TopMoviesAdapter.ViewHolder>() {
 
     var listener: Listener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_view_top_films, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_view_top_films, parent, false)
         val holder = ViewHolder(view)
 
         holder.itemView.setOnClickListener {
@@ -51,7 +52,7 @@ class TopMoviesAdapter(private var items: MovieList = MovieList(0,0,0, emptyList
                 ImageLoader.getInstance()?.load(it, object : Callback {
                     override fun onSuccess(url: String, bitmap: Bitmap) {
                         if (imageUrl == url) {
-                            itemView.film_poster_image.background= null
+                            itemView.film_poster_image.background = null
                             itemView.film_poster_image.setImageBitmap(bitmap)
                         }
                     }
@@ -65,6 +66,7 @@ class TopMoviesAdapter(private var items: MovieList = MovieList(0,0,0, emptyList
             }
 
             itemView.film_title_text.text = movie.title
+            itemView.movie_rating_text.text = movie.rating.toString()
         }
     }
 

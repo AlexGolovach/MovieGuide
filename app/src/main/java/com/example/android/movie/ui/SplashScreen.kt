@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
+import com.example.android.movie.ui.main.HomeActivity
 import com.example.android.movie.ui.register.RegisterActivity
+import com.example.android.movie.ui.utils.AccountOperation
 
 class SplashScreen : AppCompatActivity() {
 
@@ -15,9 +17,16 @@ class SplashScreen : AppCompatActivity() {
 
         handler = Handler()
         handler.postDelayed({
-            startActivity(Intent(this, RegisterActivity::class.java))
 
-            finish()
+            if (AccountOperation.isAccountSaved() == true) {
+                startActivity(Intent(this, HomeActivity::class.java))
+
+                finish()
+            } else {
+                startActivity(Intent(this, RegisterActivity::class.java))
+
+                finish()
+            }
 
         }, SPLASH_DISPLAY_LENGTH.toLong())
     }

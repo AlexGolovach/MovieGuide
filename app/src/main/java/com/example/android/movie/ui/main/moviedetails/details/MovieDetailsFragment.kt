@@ -13,13 +13,15 @@ import android.widget.Toast
 import com.example.android.movie.R
 import com.example.android.movie.mvp.moviedetails.IMovieDetailsPresenter
 import com.example.android.movie.mvp.moviedetails.IMovieDetailsView
-import com.example.android.movie.ui.getBundleWithId
+import com.example.android.movie.ui.utils.getBundleWithId
 import com.example.android.movie.ui.main.moviedetails.actor.ActorFragment
+import com.example.android.movie.ui.utils.convertTime
 import com.example.android.network.models.movie.Movie
 import com.example.android.network.models.movie.MovieList
 import com.example.android.network.models.moviedetails.MovieDetails
 import com.example.android.network.models.moviesquad.Cast
 import com.example.android.network.models.moviesquad.MovieActorSquad
+import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 
 class MovieDetailsFragment : Fragment(), IMovieDetailsView {
@@ -27,6 +29,7 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
     private lateinit var movieDetailsPresenter: IMovieDetailsPresenter
     private lateinit var movieActorsAdapter: MovieActorsAdapter
     private lateinit var recommendedMoviesAdapter: RecommendedMoviesAdapter
+    private lateinit var movieVideosAdapter: MovieVideosAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +44,7 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
             MovieActorsAdapter()
         recommendedMoviesAdapter =
             RecommendedMoviesAdapter()
+        movieVideosAdapter = MovieVideosAdapter()
 
         movieDetailsPresenter =
             MovieDetailsPresenter(this)
@@ -48,6 +52,7 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
         getData()
         initRecyclerActors()
         initRecyclerRecommendedMovies()
+        initRecyclerVideos()
     }
 
     private fun getData() {
@@ -57,6 +62,7 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
             movieDetailsPresenter.onDownloadMovieDetails(it)
             movieDetailsPresenter.onDownloadActorSquad(it)
             movieDetailsPresenter.onDownloadRecommendedMovies(it)
+            movieDetailsPresenter.onDownloadVideo(it)
         }
     }
 
@@ -72,7 +78,8 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
                 override fun onItemClicked(actor: Cast) {
 
                     val actorFragment = ActorFragment()
-                    actorFragment.arguments = getBundleWithId("ACTOR_ID", actor.id)
+                    actorFragment.arguments =
+                        getBundleWithId("ACTOR_ID", actor.id)
 
                     fragmentManager?.beginTransaction()
                         ?.addToBackStack(ActorFragment::class.java.name)
@@ -92,13 +99,13 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
         recycler_view_recommended_movies.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             setHasFixedSize(true)
-            addItemDecoration(DividerItemDecoration(context, RecyclerView.HORIZONTAL))
 
             val listener = object : RecommendedMoviesAdapter.Listener {
                 override fun onItemClicked(movie: Movie) {
 
                     val movieDetailsFragment = MovieDetailsFragment()
-                    movieDetailsFragment.arguments = getBundleWithId("MOVIE_ID", movie.id)
+                    movieDetailsFragment.arguments =
+                        getBundleWithId("MOVIE_ID", movie.id)
 
                     fragmentManager?.beginTransaction()
                         ?.addToBackStack(MovieDetailsFragment::class.java.name)
@@ -116,10 +123,26 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
         }
     }
 
+    private fun initRecyclerVideos() {
+        val context = recycler_view_videos.context
+        recycler_view_videos.apply {
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            setHasFixedSize(true)
+            addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
+
+            adapter = movieVideosAdapter
+        }
+    }
+
     override fun onDownloadResultDetails(movie: MovieDetails, poster: Bitmap) {
-        movie_title_text.text = movie.title
+        release_date_text.text = movie.releaseDate
+        runtime_text.text = convertTime(movie.runtime)
         movie_description_text.text = movie.description
-        movie_poster_image.setImageBitmap(poster)
+
+        activity?.apply {
+            poster_image?.setImageBitmap(poster)
+            collapsing_toolbar.title = movie.title
+        }
     }
 
     override fun onDownloadActorSquad(actorSquad: MovieActorSquad) {
@@ -130,6 +153,10 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
         recommendedMoviesAdapter.setItems(movies)
     }
 
+    override fun onDownloadVideo(videos: List<String>) {
+        movieVideosAdapter.setItems(videos)
+    }
+
     override fun onDownloadDetailsError(throwable: Throwable) {
         if (throwable is NullPointerException) {
             Toast.makeText(activity, throwable.message, Toast.LENGTH_SHORT).show()
@@ -138,16 +165,13 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
 
     override fun showLoading() {
         progress_bar.visibility = View.VISIBLE
+        activity?.collapsing_toolbar?.visibility = View.GONE
     }
 
     override fun hideLoading() {
         progress_bar.visibility = View.GONE
-        movie_poster_image.visibility = View.VISIBLE
-        movie_title_text.visibility = View.VISIBLE
-        movie_description_text.visibility = View.VISIBLE
-        recycler_view_actor.visibility = View.VISIBLE
-        recommended_movies_text.visibility = View.VISIBLE
-        recycler_view_recommended_movies.visibility = View.VISIBLE
+        details_layout.visibility = View.VISIBLE
+        activity?.collapsing_toolbar?.visibility = View.VISIBLE
     }
 
     override fun onDestroy() {
