@@ -8,5 +8,7 @@ interface IMovieDetailsPresenter{
 
     fun onDownloadRecommendedMovies(movieId: Int)
 
+    fun onDownloadVideo(movieId: Int)
+
     fun onDestroy()
 }

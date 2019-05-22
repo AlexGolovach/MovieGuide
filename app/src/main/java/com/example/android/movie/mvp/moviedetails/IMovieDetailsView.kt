@@ -14,5 +14,7 @@ interface IMovieDetailsView: ILoadingView {
 
     fun onDownloadRecommendedMovies(movies: MovieList)
 
+    fun onDownloadVideo(videos: List<String>)
+
     fun onDownloadDetailsError(throwable: Throwable)
 }

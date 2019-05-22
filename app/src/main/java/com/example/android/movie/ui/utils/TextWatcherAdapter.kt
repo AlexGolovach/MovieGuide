@@ -1,4 +1,4 @@
-package com.example.android.movie.ui.widget
+package com.example.android.movie.ui.utils
 
 import android.text.Editable
 import android.text.TextWatcher
