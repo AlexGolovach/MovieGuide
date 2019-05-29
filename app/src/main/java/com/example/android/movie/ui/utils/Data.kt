@@ -14,5 +14,9 @@ fun convertTime(time: Int?): String? {
     val hours = time?.div(60)
     val minutes = hours?.times(60)?.let { time.minus(it) }
 
-    return "$hours hr $minutes min"
+    return if (hours == 0) {
+        "$minutes min"
+    } else {
+        "$hours hr $minutes min"
+    }
 }

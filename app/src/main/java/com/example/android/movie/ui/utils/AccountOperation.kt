@@ -9,7 +9,6 @@ object AccountOperation {
 
     private const val APP_PREFERENCES = "ACCOUNT"
     private const val USER = "USER"
-    private const val SAVE_ACC = "SAVE_ACCOUNT"
 
     private val sharedPreferences =
         App.get()?.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
@@ -25,21 +24,14 @@ object AccountOperation {
 
     fun deleteAccountInformation() {
         editor?.remove(USER)
-        editor?.remove(SAVE_ACC)
         editor?.clear()
         editor?.apply()
     }
 
-    fun createAccount(user: User, saveAcc: Boolean) {
+    fun createAccount(user: User) {
         val account = gson.toJson(user)
 
-        editor?.putBoolean(SAVE_ACC, saveAcc)
         editor?.putString(USER, account)
         editor?.apply()
-    }
-
-    fun isAccountSaved(): Boolean?{
-
-        return sharedPreferences?.getBoolean(SAVE_ACC,false)
     }
 }

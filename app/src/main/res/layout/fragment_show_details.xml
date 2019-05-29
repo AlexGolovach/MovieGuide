@@ -95,7 +95,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/movie_description_text"
+                    android:id="@+id/show_description_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp" />
@@ -149,16 +149,16 @@
                     android:layout_margin="10dp" />
 
                 <TextView
-                    android:id="@+id/recommended_movies_text"
+                    android:id="@+id/recommended_shows_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="@string/recommended_movies"
+                    android:text="@string/recommended_shows"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view_recommended_movies"
+                    android:id="@+id/recycler_view_recommended_shows"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp" />
