@@ -16,9 +16,20 @@
     <string name="movies_with_actor">Movies with actor:</string>
     <string name="recommended_movies">Recommended movies:</string>
     <string name="remember_me">Remember me</string>
-    <string name="videos">Videos:</string>
+    <string name="videos">Videos</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="release_date">Release Date:</string>
     <string name="runtime">Runtime:</string>
+    <string name="error">Error</string>
+    <string name="problem_with_entry">Email or password is not correct!</string>
+    <string name="ok">Ok</string>
+    <string name="favorites_is_empty">Favorites is empty</string>
+    <string name="favorites">Favorites</string>
+    <string name="add">Add</string>
+    <string name="comments">Comments:</string>
+    <string name="write_review">Write review...</string>
+    <string name="shows_with_actor">Shows with actor</string>
+    <string name="recommended_shows">Recommended shows:</string>
+    <string name="fields_must_not_be_empty">Fields must not be empty</string>
 </resources>
