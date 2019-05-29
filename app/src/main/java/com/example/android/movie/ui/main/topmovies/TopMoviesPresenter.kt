@@ -10,6 +10,7 @@ class TopMoviesPresenter(private var topMoviesView: ITopMoviesView?) :
     ITopMoviesPresenter {
 
     override fun onDownloadMovies() {
+        topMoviesView?.showLoading()
 
         Injector.getMoviesRepositoryImpl().loadPopularMovies(object :
             MoviesCallback<MovieList> {
@@ -20,7 +21,7 @@ class TopMoviesPresenter(private var topMoviesView: ITopMoviesView?) :
 
             override fun onError(throwable: Throwable) {
                 topMoviesView?.onDownloadError(throwable)
-                topMoviesView?.showLoading()
+                topMoviesView?.hideLoading()
             }
         })
     }
@@ -28,5 +29,4 @@ class TopMoviesPresenter(private var topMoviesView: ITopMoviesView?) :
     override fun onDestroy(){
         topMoviesView = null
     }
-
 }

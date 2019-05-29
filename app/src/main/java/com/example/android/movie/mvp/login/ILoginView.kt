@@ -1,8 +1,10 @@
 package com.example.android.movie.mvp.login
 
-interface ILoginView{
+import com.example.android.database.model.User
 
-    fun findUserSuccess(success: String)
+interface ILoginView {
 
-    fun findUserError(error: String)
+    fun entrySuccess(user: User)
+
+    fun entryError(error: Throwable)
 }

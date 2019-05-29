@@ -9,15 +9,23 @@ import com.example.android.network.models.movie.Movie
 import com.example.android.network.models.movie.MovieList
 import kotlinx.android.synthetic.main.item_view_search_result.view.*
 
-class SearchResultAdapter(private var items: MovieList = MovieList(0,0,0, emptyList())) :
+class SearchResultAdapter(private var items: MovieList = MovieList(0, 0, 0, emptyList())) :
     RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder =
-        ViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_view_search_result, parent, false
-            )
+    var openListener: OpenListener? = null
+
+    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(
+            R.layout.item_view_search_result, parent, false
         )
+        val holder = ViewHolder(view)
+
+        holder.itemView.setOnClickListener {
+            openListener?.onItemClickedListener(items.results[holder.adapterPosition])
+        }
+
+        return holder
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movie = items.results[position]
@@ -25,8 +33,8 @@ class SearchResultAdapter(private var items: MovieList = MovieList(0,0,0, emptyL
         holder.itemView.movie_title.text = movie.title
     }
 
-    fun updateItems(list: MovieList){
-        items = MovieList(0,0,0, emptyList())
+    fun updateItems(list: MovieList) {
+        items = MovieList(0, 0, 0, emptyList())
         items = list
         notifyDataSetChanged()
     }
@@ -36,4 +44,8 @@ class SearchResultAdapter(private var items: MovieList = MovieList(0,0,0, emptyL
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
+    interface OpenListener {
+        fun onItemClickedListener(movie: Movie)
+    }
 }

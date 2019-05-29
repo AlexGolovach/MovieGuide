@@ -1,8 +1,10 @@
 package com.example.android.movie.mvp.signup
 
+import com.example.android.database.model.User
+
 interface ISignUpView{
 
-    fun createUserSuccess(success: String)
+    fun createUserSuccess(user: User)
 
-    fun createUserError(error: String)
+    fun createUserError(error: Throwable)
 }

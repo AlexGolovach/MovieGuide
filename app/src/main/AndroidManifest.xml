@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.android.movie">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -31,9 +31,18 @@
         <activity
             android:name=".ui.main.HomeActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.main.moviedetails.DetailsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.profile.ProfileActivity" />
+        <activity
+            android:name=".ui.main.information.MovieDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.profile.ProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.favorites.FavoritesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.information.ShowDetailsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

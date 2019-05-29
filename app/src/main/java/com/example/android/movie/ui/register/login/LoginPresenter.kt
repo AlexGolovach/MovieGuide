@@ -5,18 +5,19 @@ import com.example.android.database.Injector
 import com.example.android.database.model.User
 import com.example.android.movie.mvp.login.ILoginPresenter
 import com.example.android.movie.mvp.login.ILoginView
-import com.example.android.movie.ui.utils.AccountOperation.createAccount
+import com.example.android.movie.ui.utils.AccountOperation
 
-class LoginPresenter(private var iLoginView: ILoginView?): ILoginPresenter{
-    override fun findUser(email: String, password: String, saveAcc: Boolean) {
-        Injector.getDBRepositoryImpl().findUser(email,password,object: Callback<User>{
+class LoginPresenter(private var iLoginView: ILoginView?) : ILoginPresenter {
+    override fun findUser(email: String, password: String) {
+        Injector.getUserRepositoryImpl().login(email, password, object : Callback<User> {
             override fun onSuccess(result: User) {
-                createAccount(result, saveAcc)
-                iLoginView?.findUserSuccess("Success")
+                AccountOperation.createAccount(result)
+
+                iLoginView?.entrySuccess(result)
             }
 
-            override fun onError(error: String) {
-                iLoginView?.findUserError("Error")
+            override fun onError(throwable: Throwable) {
+                iLoginView?.entryError(throwable)
             }
         })
     }

@@ -3,7 +3,6 @@ package com.example.android.movie.ui.main.topmovies
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView.VERTICAL
 import android.view.LayoutInflater
@@ -13,7 +12,7 @@ import android.widget.Toast
 import com.example.android.movie.R
 import com.example.android.movie.mvp.topmovies.ITopMoviesPresenter
 import com.example.android.movie.mvp.topmovies.ITopMoviesView
-import com.example.android.movie.ui.main.moviedetails.DetailsActivity
+import com.example.android.movie.ui.main.information.MovieDetailsActivity
 import com.example.android.network.models.movie.Movie
 import com.example.android.network.models.movie.MovieList
 import kotlinx.android.synthetic.main.fragment_top_movies.*
@@ -53,7 +52,7 @@ class TopMoviesFragment : Fragment(), ITopMoviesView {
 
             val listener = object : TopMoviesAdapter.Listener {
                 override fun onItemClicked(movie: Movie) {
-                    val intent = Intent(activity, DetailsActivity::class.java)
+                    val intent = Intent(activity, MovieDetailsActivity::class.java)
 
                     intent.putExtra("MOVIE_ID", movie.id)
 

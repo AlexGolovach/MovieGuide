@@ -1,25 +1,26 @@
 package com.example.android.movie.ui.register.login
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import com.example.android.database.model.User
 import com.example.android.movie.R
 import com.example.android.movie.mvp.login.ILoginPresenter
 import com.example.android.movie.mvp.login.ILoginView
 import com.example.android.movie.ui.main.HomeActivity
 import com.example.android.movie.ui.register.signup.SignUpFragment
-import com.example.android.movie.ui.utils.TextWatcherAdapter
+import com.example.android.movie.ui.utils.dialogprogress.DialogProgress
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
 
 class LoginFragment : Fragment(), ILoginView {
 
     private lateinit var loginPresenter: ILoginPresenter
+    private val dialogProgress = DialogProgress()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,19 +42,13 @@ class LoginFragment : Fragment(), ILoginView {
         initListeners()
     }
 
+    private fun initToolbar(view: View) {
+        view.toolbar.apply {
+            title = getString(R.string.app_name)
+        }
+    }
+
     private fun initListeners() {
-
-        edit_email.addTextChangedListener(object : TextWatcherAdapter() {
-            override fun afterTextChanged(p0: Editable?) {
-
-                edit_password.addTextChangedListener(object : TextWatcherAdapter() {
-                    override fun afterTextChanged(p0: Editable?) {
-                        updateButtonState()
-                    }
-                })
-            }
-        })
-
         sign_up.setOnClickListener {
             fragmentManager?.beginTransaction()
                 ?.addToBackStack(SignUpFragment::class.java.name)
@@ -65,28 +60,32 @@ class LoginFragment : Fragment(), ILoginView {
         }
 
         btn_login.setOnClickListener {
-            loginPresenter.findUser(edit_email.text.toString(), edit_password.text.toString(), save_acc_check_box.isChecked)
+            dialogProgress.show(fragmentManager,"dialog_progress")
+            loginPresenter.findUser(edit_email.text.toString(), edit_password.text.toString())
         }
     }
 
-    override fun findUserSuccess(success: String) {
-        Toast.makeText(activity, success, Toast.LENGTH_SHORT).show()
+    override fun entrySuccess(user: User) {
+        dialogProgress.dismiss()
 
         startActivity(Intent(activity, HomeActivity::class.java))
         activity?.finish()
     }
 
-    override fun findUserError(error: String) {
-        Toast.makeText(activity, error, Toast.LENGTH_SHORT).show()
-    }
+    override fun entryError(error: Throwable) {
+        if (error is NullPointerException) {
 
-    private fun updateButtonState() {
-        btn_login.isEnabled = true
-    }
-
-    private fun initToolbar(view: View) {
-        view.toolbar.apply {
-            title = getString(R.string.app_name)
+            val builder = AlertDialog.Builder(activity)
+            builder.setTitle(getString(R.string.error))
+                .setMessage(getString(R.string.problem_with_entry))
+                .setIcon(R.mipmap.ic_launcher)
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                    dialogProgress.dismiss()
+                    dialog.cancel()
+                }
+                .create()
+                .show()
         }
     }
 
