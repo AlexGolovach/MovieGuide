@@ -10,5 +10,15 @@ interface IMovieDetailsPresenter{
 
     fun onDownloadVideo(movieId: Int)
 
+    fun addMovieToFavorites(movieId: Int)
+
+    fun checkMovieInFavorites(movieId: Int)
+
+    fun addReviewForFilm(movieId: Int, userName: String, review: String)
+
+    fun loadReviewForFilm(movieId: Int)
+
+    fun deleteReviewForFilm(documentId: String)
+
     fun onDestroy()
 }

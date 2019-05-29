@@ -8,5 +8,7 @@ interface IActorPresenter{
 
     fun onDownloadActorMovies(actorId: Int)
 
+    fun onDownloadActorShows(actorId: Int)
+
     fun onDestroy()
 }

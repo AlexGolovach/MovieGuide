@@ -1,16 +1,15 @@
-package com.example.android.movie.ui.main.moviedetails.details
+package com.example.android.movie.ui.main.information.details.movie
 
-import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.android.imageloader.Callback
 import com.example.android.movie.R
 import com.example.android.network.Converter.Companion.getImageUrl
 import com.example.android.network.models.moviesquad.Cast
 import com.example.android.network.models.moviesquad.MovieActorSquad
-import kotlinx.android.synthetic.main.item_view_actor.view.*
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_view_movie_actor_squad.view.*
 
 class MovieActorsAdapter(
     private var items: MovieActorSquad = MovieActorSquad(
@@ -24,7 +23,7 @@ class MovieActorsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_view_actor, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_view_movie_actor_squad, parent, false)
         val holder =
             ViewHolder(
                 view
@@ -56,22 +55,11 @@ class MovieActorsAdapter(
         fun bind(actor: Cast) {
             val imageUrl = actor.image?.let { getImageUrl(it) }
 
-            imageUrl?.let {
-                ImageLoader.getInstance()?.load(it, object : Callback {
-                    override fun onSuccess(url: String, bitmap: Bitmap) {
-                        if (imageUrl == url) {
-                            itemView.actor_image.background = null
-                            itemView.actor_image.setImageBitmap(bitmap)
-                        }
-                    }
-
-                    override fun onError(url: String, throwable: Throwable) {
-                        if (imageUrl == url) {
-                            itemView.actor_image.setImageResource(R.drawable.actor_placeholder)
-                        }
-                    }
-                })
-            }
+            Picasso.get()
+                .load(imageUrl)
+                .placeholder(R.drawable.actor_placeholder)
+                .error(R.drawable.actor_placeholder)
+                .into(itemView.actor_image)
 
             itemView.actor_name.text = actor.name
             itemView.actor_character.text = actor.character
