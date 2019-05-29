@@ -4,6 +4,8 @@ import com.example.android.network.repository.actors.ActorsRepository
 import com.example.android.network.repository.actors.ActorsRepositoryImpl
 import com.example.android.network.repository.movies.MoviesRepository
 import com.example.android.network.repository.movies.MoviesRepositoryImpl
+import com.example.android.network.repository.shows.ShowsRepository
+import com.example.android.network.repository.shows.ShowsRepositoryImpl
 import com.example.android.network.repository.videos.VideosRepository
 import com.example.android.network.repository.videos.VideosRepositoryImpl
 
@@ -13,13 +15,14 @@ class Injector private constructor() {
         MoviesRepositoryImpl()
     private val actorsRepositoryImpl: ActorsRepositoryImpl = ActorsRepositoryImpl()
     private val videosRepositoryImpl: VideosRepositoryImpl = VideosRepositoryImpl()
+    private val showsRepositoryImpl: ShowsRepositoryImpl = ShowsRepositoryImpl()
 
     companion object {
 
         @Volatile
         private var instance: Injector? = null
 
-        fun getInstance(): Injector? {
+        private fun getInstance(): Injector? {
             if (instance == null) {
                 synchronized(Injector::class.java) {
                     if (instance == null) {
@@ -41,6 +44,10 @@ class Injector private constructor() {
 
         fun getVideosRepositoryImpl(): VideosRepository {
             return getInstance()!!.videosRepositoryImpl
+        }
+
+        fun getShowsRepositoryImpl(): ShowsRepository {
+            return getInstance()!!.showsRepositoryImpl
         }
     }
 }
