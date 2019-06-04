@@ -42,7 +42,7 @@ class LoginFragment : Fragment(), ILoginView {
     }
 
     private fun initListeners() {
-
+        //TODO rename fields
         edit_email.addTextChangedListener(object : TextWatcherAdapter() {
             override fun afterTextChanged(p0: Editable?) {
 

@@ -53,6 +53,7 @@ class ActorFragment : Fragment(), IActorView {
     }
 
     private fun getData() {
+        //TODO save to variable
         val actorId = arguments?.getInt("ACTOR_ID")
 
         actorId?.let {
@@ -71,11 +72,12 @@ class ActorFragment : Fragment(), IActorView {
 
             val listener = object : ActorImageAdapter.Listener {
                 override fun onItemClicked(actorImage: Image) {
+                    //TODO prepare url before adapter
                     val imageUrl = actorImage.image?.let { getImageUrl(it) }
 
                     val bundle = Bundle()
                     bundle.putString("IMAGE_URL", imageUrl)
-
+                    //TODO try to create newInstance method for fragment
                     dialogImage.arguments = bundle
                     dialogImage.show(fragmentManager, "dialog_image")
                 }

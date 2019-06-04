@@ -25,6 +25,8 @@ class Injector private constructor(context: Context){
             return instance
         }
 
+        //TODO check if you create instance every time
+        //TODO don't use !!
         fun getDBRepositoryImpl(): DBHelperRepository{
             return getInstance()!!.dbHelperRepositoryImpl
         }

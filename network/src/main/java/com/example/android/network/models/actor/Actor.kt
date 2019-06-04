@@ -5,14 +5,19 @@ import com.google.gson.annotations.SerializedName
 data class Actor(
     @SerializedName("birthday")
     val birthday: String?,
+
     @SerializedName("known_for_department")
-    val known_for_department: String?,
+    val knownForDepartment: String?,
+
     @SerializedName("deathday")
     val death_day: String?,
+
     @SerializedName("id")
     val id: Int?,
+
     @SerializedName("name")
     val name: String?,
+    //TODO rename
     @SerializedName("also_known_as")
     val also_known_as: List<String>,
     @SerializedName("gender")

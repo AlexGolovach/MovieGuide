@@ -26,6 +26,7 @@ class DBHelperRepositoryImpl(context: Context) : SQLiteOpenHelper(
     private val db = this.writableDatabase
 
     override fun onCreate(db: SQLiteDatabase?) {
+        //TODO create table if table is not exist
         val table =
             ("CREATE TABLE $TABLE_NAME ($ID INTEGER PRIMARY KEY,$LOGIN TEXT,$EMAIL TEXT,$PASSWORD TEXT)")
         db?.execSQL(table)
@@ -42,7 +43,9 @@ class DBHelperRepositoryImpl(context: Context) : SQLiteOpenHelper(
             "SELECT * FROM $TABLE_NAME WHERE $LOGIN=? OR $EMAIL=?",
             arrayOf(user.login, user.email)
         )
-
+//        cursor.use {
+//
+//        }
         if (cursor.count == 0) {
             cursor.close()
 

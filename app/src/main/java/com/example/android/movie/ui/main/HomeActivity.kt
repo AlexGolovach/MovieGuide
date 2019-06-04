@@ -24,7 +24,6 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         setContentView(R.layout.activity_home)
 
         supportFragmentManager.beginTransaction()
-            .addToBackStack(TopMoviesFragment::javaClass.name)
             .replace(R.id.container, TopMoviesFragment(), TopMoviesFragment::class.java.name)
             .commit()
 

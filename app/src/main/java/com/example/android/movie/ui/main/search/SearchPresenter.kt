@@ -6,13 +6,14 @@ import com.example.android.network.Injector
 import com.example.android.network.models.movie.Movie
 import com.example.android.network.models.movie.MovieList
 import com.example.android.network.repository.movies.MoviesCallback
+import java.util.*
 
 class SearchPresenter(private var iSearchMoviesView: ISearchMoviesView?) :
     ISearchMoviesPresenter {
 
     override fun onSearchMovies(query: String?) {
 
-        val userInput = query?.toLowerCase()
+        val userInput = query?.toLowerCase(Locale.getDefault())
 
         query?.let {
             if (it.length >= 3) {

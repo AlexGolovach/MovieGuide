@@ -24,9 +24,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(path: ':imageloader')
-    implementation project(path: ':network')
-    implementation project(path: ':database')
+    implementation project(':imageloader')
+    implementation project(':network')
+    implementation project(':database')
 
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0'

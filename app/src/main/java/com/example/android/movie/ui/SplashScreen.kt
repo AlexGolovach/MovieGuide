@@ -28,7 +28,7 @@ class SplashScreen : AppCompatActivity() {
                 finish()
             }
 
-        }, SPLASH_DISPLAY_LENGTH.toLong())
+        }, SPLASH_DISPLAY_LENGTH)
     }
 
     override fun onDestroy() {
@@ -38,6 +38,6 @@ class SplashScreen : AppCompatActivity() {
     }
 
     companion object {
-        private const val SPLASH_DISPLAY_LENGTH = 1000
+        private const val SPLASH_DISPLAY_LENGTH = 1000L
     }
 }

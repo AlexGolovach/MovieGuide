@@ -12,6 +12,8 @@ class LoginPresenter(private var iLoginView: ILoginView?): ILoginPresenter{
         Injector.getDBRepositoryImpl().findUser(email,password,object: Callback<User>{
             override fun onSuccess(result: User) {
                 createAccount(result, saveAcc)
+                //TODO move to strings
+                //TODO remove string param
                 iLoginView?.findUserSuccess("Success")
             }
 

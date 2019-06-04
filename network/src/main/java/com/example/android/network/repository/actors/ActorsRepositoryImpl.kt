@@ -47,7 +47,7 @@ class ActorsRepositoryImpl : ActorsRepository {
     }
 
     override fun getActorsSquad(movieId: Int, callback: ActorsCallback<MovieActorSquad>) {
-
+        //TODO create API class
         url = "https://api.themoviedb.org/3/movie/$movieId/credits?api_key=${Constants.API_KEY}"
 
         HttpRequest.getInstance()?.load(url, object : Callback {

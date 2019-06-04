@@ -30,6 +30,7 @@ class HttpRequest private constructor(){
         if (url != "") {
             LoaderTask(callback).execute(url)
         } else {
+            //TODO don't use NullPointer for own exceptions
             callback.onError(NullPointerException("Url must not be null"))
         }
     }
