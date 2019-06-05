@@ -1,16 +1,16 @@
-package com.example.android.movie.ui.main.search
+package com.example.android.movie.ui.main.topshows
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.android.movie.R
-import com.example.android.network.models.movie.Movie
-import com.example.android.network.models.movie.MovieList
+import com.example.android.network.models.shows.Show
+import com.example.android.network.models.shows.ShowsList
 import kotlinx.android.synthetic.main.item_view_search_result.view.*
 
-class SearchResultAdapter(private var items: MovieList = MovieList(0, 0, 0, emptyList())) :
-    RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
+class SearchResultShowAdapter(private var items: ShowsList = ShowsList(0, 0, 0, emptyList())) :
+    RecyclerView.Adapter<SearchResultShowAdapter.ViewHolder>() {
 
     var openListener: OpenListener? = null
 
@@ -33,8 +33,8 @@ class SearchResultAdapter(private var items: MovieList = MovieList(0, 0, 0, empt
         holder.itemView.movie_title.text = movie.title
     }
 
-    fun updateItems(list: MovieList) {
-        items = MovieList(0, 0, 0, emptyList())
+    fun updateItems(list: ShowsList) {
+        items = ShowsList(0, 0, 0, emptyList())
         items = list
         notifyDataSetChanged()
     }
@@ -46,6 +46,6 @@ class SearchResultAdapter(private var items: MovieList = MovieList(0, 0, 0, empt
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     interface OpenListener {
-        fun onItemClickedListener(movie: Movie)
+        fun onItemClickedListener(show: Show)
     }
 }

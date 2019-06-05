@@ -25,4 +25,8 @@ class TabAdapter(fm: FragmentManager): FragmentPagerAdapter(fm){
         fragmentList.add(fragment)
         fragmentTitleList.add(title)
     }
+
+    fun setTextQueryChanged(query: String?){
+
+    }
 }
