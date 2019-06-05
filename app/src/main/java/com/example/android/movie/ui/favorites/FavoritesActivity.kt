@@ -15,11 +15,22 @@ class FavoritesActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_favorites)
 
-        setSupportActionBar(toolbar)
-
+        initToolbar()
         initViewPager()
 
         tablayout.setupWithViewPager(viewpager)
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(toolbar)
+
+        toolbar.apply {
+            title = resources.getString(R.string.favorites)
+            setNavigationIcon(R.drawable.ic_arrow_back)
+            setNavigationOnClickListener {
+
+            }
+        }
     }
 
     private fun initViewPager() {

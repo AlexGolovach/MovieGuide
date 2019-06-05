@@ -4,5 +4,7 @@ interface ITopShowsPresenter {
 
     fun onDownloadShows()
 
+    fun onSearchMovies(query: String?)
+
     fun onDestroy()
 }

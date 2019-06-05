@@ -18,7 +18,12 @@ class ProfileActivity: AppCompatActivity(){
     }
 
     private fun initToolbar() {
-        toolbar.title = resources.getString(R.string.profile)
+        toolbar.apply {
+            title = resources.getString(R.string.profile)
+            setNavigationIcon(R.drawable.ic_arrow_back)
+            setNavigationOnClickListener {
+            }
+        }
     }
 
     private fun getAccountInformation() {

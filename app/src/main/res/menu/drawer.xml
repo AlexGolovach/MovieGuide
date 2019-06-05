@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_profile"
             android:title="@string/profile" />
         <item
+            android:id="@+id/watch_films_serials"
+            android:icon="@drawable/ic_movie"
+            android:title="@string/watch_films_and_serials"/>
+        <item
             android:id="@+id/exit"
             android:icon="@drawable/ic_exit"
             android:title="@string/exit" />

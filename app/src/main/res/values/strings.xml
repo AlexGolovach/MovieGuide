@@ -23,6 +23,7 @@
     <string name="runtime">Runtime:</string>
     <string name="error">Error</string>
     <string name="problem_with_entry">Email or password is not correct!</string>
+    <string name="problem_with_create_account">Username or email exist!</string>
     <string name="ok">Ok</string>
     <string name="favorites_is_empty">Favorites is empty</string>
     <string name="favorites">Favorites</string>
@@ -32,4 +33,6 @@
     <string name="shows_with_actor">Shows with actor</string>
     <string name="recommended_shows">Recommended shows:</string>
     <string name="fields_must_not_be_empty">Fields must not be empty</string>
+    <string name="watch_films_and_serials">Watch films and serials</string>
+    <string name="films_and_serials">Films and serials</string>
 </resources>

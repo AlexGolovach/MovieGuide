@@ -8,7 +8,6 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.android.database.model.User
 import com.example.android.movie.R
 import com.example.android.movie.mvp.signup.ISignUpPresenter
@@ -50,6 +49,8 @@ class SignUpFragment : Fragment(), ISignUpView {
         view.toolbar.apply {
             title = getString(R.string.app_name)
             setTitleTextColor(resources.getColor(R.color.white))
+            setNavigationIcon(R.drawable.ic_arrow_back)
+            setNavigationOnClickListener {  }
         }
     }
 
@@ -75,18 +76,19 @@ class SignUpFragment : Fragment(), ISignUpView {
 
     override fun createUserError(error: Throwable) {
         if (error is NullPointerException) {
-            showDialog(getString(R.string.problem_with_entry))
+            showDialog(getString(R.string.problem_with_create_account))
         }
     }
 
     private fun showDialog(message: String) {
+        dialogProgress.dismiss()
+
         val builder = AlertDialog.Builder(activity)
         builder.setTitle(getString(R.string.error))
             .setMessage(message)
             .setIcon(R.mipmap.ic_launcher)
             .setCancelable(false)
             .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
-                dialogProgress.dismiss()
                 dialog.cancel()
             }
             .create()

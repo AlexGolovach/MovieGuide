@@ -8,4 +8,6 @@ interface ITopShowsView: ILoadingView {
     fun onDownloadResult(shows: ShowsList)
 
     fun onDownloadError(throwable: Throwable)
+
+    fun onSearchResult(result: ShowsList)
 }
