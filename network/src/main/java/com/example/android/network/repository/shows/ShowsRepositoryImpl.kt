@@ -45,13 +45,16 @@ class ShowsRepositoryImpl : ShowsRepository {
         })
     }
 
-    override fun getRecommendedShowsForShow(showId: Int, callback: ShowsCallback<RecommendShowsList>) {
+    override fun getRecommendedShowsForShow(
+        showId: Int,
+        callback: ShowsCallback<RecommendShowsList>
+    ) {
         url =
             "https://api.themoviedb.org/3/tv/$showId/recommendations?api_key=${Constants.API_KEY}&language=en-US&page=1"
 
-        HttpRequest.getInstance()?.load(url, object : Callback{
+        HttpRequest.getInstance()?.load(url, object : Callback {
             override fun onSuccess(json: String) {
-                callback.onSuccess(Converter.parsingJson(json,RecommendShowsList::class.java))
+                callback.onSuccess(Converter.parsingJson(json, RecommendShowsList::class.java))
             }
 
             override fun onError(throwable: Throwable) {
@@ -61,11 +64,27 @@ class ShowsRepositoryImpl : ShowsRepository {
     }
 
     override fun getActorShows(actorId: Int, callback: ShowsCallback<ActorShows>) {
-        url = "https://api.themoviedb.org/3/person/$actorId/tv_credits?api_key=${Constants.API_KEY}&language=en-US"
+        url =
+            "https://api.themoviedb.org/3/person/$actorId/tv_credits?api_key=${Constants.API_KEY}&language=en-US"
 
-        HttpRequest.getInstance()?.load(url, object : Callback{
+        HttpRequest.getInstance()?.load(url, object : Callback {
             override fun onSuccess(json: String) {
-                callback.onSuccess(Converter.parsingJson(json,ActorShows::class.java))
+                callback.onSuccess(Converter.parsingJson(json, ActorShows::class.java))
+            }
+
+            override fun onError(throwable: Throwable) {
+                callback.onError(throwable)
+            }
+        })
+    }
+
+    override fun getSearchResultShows(query: String, callback: ShowsCallback<ShowsList>) {
+        url =
+            "https://api.themoviedb.org/3/search/tv?api_key=${Constants.API_KEY}&language=en-US&query=$query&page=1"
+
+        HttpRequest.getInstance()?.load(url, object : Callback {
+            override fun onSuccess(json: String) {
+                callback.onSuccess(Converter.parsingJson(json, ShowsList::class.java))
             }
 
             override fun onError(throwable: Throwable) {

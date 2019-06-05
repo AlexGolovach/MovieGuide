@@ -14,4 +14,6 @@ interface ShowsRepository{
     fun getRecommendedShowsForShow(showId: Int, callback: ShowsCallback<RecommendShowsList>)
 
     fun getActorShows(actorId: Int, callback: ShowsCallback<ActorShows>)
+
+    fun getSearchResultShows(query: String, callback: ShowsCallback<ShowsList>)
 }

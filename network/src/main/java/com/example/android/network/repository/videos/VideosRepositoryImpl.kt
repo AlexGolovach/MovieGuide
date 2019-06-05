@@ -1,6 +1,5 @@
 package com.example.android.network.repository.videos
 
-import android.util.Log
 import com.example.android.network.Constants
 import com.example.android.network.Converter
 import com.example.android.network.httprequest.Callback
@@ -42,5 +41,4 @@ class VideosRepositoryImpl : VideosRepository {
             }
         })
     }
-
 }
