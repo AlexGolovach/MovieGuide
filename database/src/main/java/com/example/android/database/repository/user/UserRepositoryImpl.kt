@@ -38,19 +38,23 @@ class UserRepositoryImpl(private val sharedPreferences: SharedPreferences) :
 
 
         val userNameQuery = databaseUsers
-            .orderByChild("users")
+            .orderByChild("login")
             .equalTo(userName)
 
         userNameQuery.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                Log.d(UserRepositoryImpl::class.java.name, dataSnapshot.childrenCount.toString())
+
                 if (!dataSnapshot.exists()) {
                     val userEmailQuery = databaseUsers
-                        .orderByChild("users")
+                        .orderByChild("email")
                         .equalTo(userEmail)
 
                     userEmailQuery.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            Log.d(UserRepositoryImpl::class.java.name, dataSnapshot.childrenCount.toString())
+
                             if (!dataSnapshot.exists()) {
 
                                 val userId = databaseUsers.push().key

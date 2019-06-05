@@ -6,6 +6,8 @@ import com.example.android.database.repository.favoritemovies.FavoriteMoviesRepo
 import com.example.android.database.repository.favoritemovies.FavoriteMoviesRepositoryImpl
 import com.example.android.database.repository.favoriteshows.FavoriteShowsRepository
 import com.example.android.database.repository.favoriteshows.FavoriteShowsRepositoryImpl
+import com.example.android.database.repository.fullserialsfilms.FullSerialsFilmsRepository
+import com.example.android.database.repository.fullserialsfilms.FullSerialsFilmsRepositoryImpl
 import com.example.android.database.repository.reviews.ReviewsRepository
 import com.example.android.database.repository.reviews.ReviewsRepositoryImpl
 import com.example.android.database.repository.user.UserRepository
@@ -24,6 +26,8 @@ class Injector private constructor(context: Context) {
     private val favoriteShowsRepositoryImpl: FavoriteShowsRepositoryImpl =
         FavoriteShowsRepositoryImpl()
     private val reviewsRepositoryImpl: ReviewsRepositoryImpl = ReviewsRepositoryImpl()
+    private val fullSerialsFilmsRepositoryImpl: FullSerialsFilmsRepositoryImpl =
+        FullSerialsFilmsRepositoryImpl()
 
     companion object {
 
@@ -56,6 +60,10 @@ class Injector private constructor(context: Context) {
 
         fun getReviewsRepositoryImpl(): ReviewsRepository {
             return getInstance()!!.reviewsRepositoryImpl
+        }
+
+        fun getFullSerialsFilmsRepositoryImpl(): FullSerialsFilmsRepository {
+            return getInstance()!!.fullSerialsFilmsRepositoryImpl
         }
     }
 }

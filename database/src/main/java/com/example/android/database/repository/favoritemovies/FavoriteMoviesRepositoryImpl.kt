@@ -37,10 +37,7 @@ class FavoriteMoviesRepositoryImpl : FavoriteMoviesRepository {
             }
     }
 
-    override fun downloadMyFavoriteMovies(
-        userId: String,
-        callback: Callback<ArrayList<FavoriteMovies>>
-    ) {
+    override fun downloadMyFavoriteMovies(userId: String, callback: Callback<ArrayList<FavoriteMovies>>) {
         favoriteMoviesList.clear()
 
         favorites
