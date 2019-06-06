@@ -5,34 +5,49 @@ import com.google.gson.annotations.SerializedName
 data class Cast(
     @SerializedName("character")
     val character: String?,
-    @SerializedName("credit_id")
-    val credit_id: String?,
+
+    @SerializedName("creditId")
+    val creditId: String?,
+
     @SerializedName("poster_path")
     val poster: String?,
+
     @SerializedName("id")
     val id: Int?,
+
     @SerializedName("video")
     val video: Boolean,
+
     @SerializedName("vote_count")
-    val vote_count: Int?,
+    val voteCount: Int?,
+
     @SerializedName("adult")
     val adult: Boolean,
+
     @SerializedName("backdrop_path")
     val image: String?,
+
     @SerializedName("genre_ids")
-    val genre_ids: List<Int>,
+    val genreIds: List<Int>,
+
     @SerializedName("original_language")
-    val original_language: String?,
+    val originalLanguage: String?,
+
     @SerializedName("original_title")
-    val original_title: String?,
+    val originalTitle: String?,
+
     @SerializedName("popularity")
     val popularity: Double?,
+
     @SerializedName("title")
     val title: String?,
+
     @SerializedName("vote_average")
     val rating: Double?,
+
     @SerializedName("overview")
     val description: String?,
+
     @SerializedName("release_date")
     val releaseDate: String?
 )
