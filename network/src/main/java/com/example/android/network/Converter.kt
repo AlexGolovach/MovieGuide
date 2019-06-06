@@ -14,8 +14,8 @@ class Converter {
 
         fun getImageUrl(image: String): String {
 
-            val list = listOf(Constants.IMAGE_URL, image)
-            return list.filter { !it.isEmpty() }.joinToString("")
+            val list = listOf(APIClient.IMAGE_URL, image)
+            return list.filter { it.isNotEmpty() }.joinToString("")
         }
     }
 }
