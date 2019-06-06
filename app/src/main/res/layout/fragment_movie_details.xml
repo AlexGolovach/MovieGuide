@@ -15,7 +15,7 @@
             app:layout_constraintGuide_percent="0.85" />
 
         <ProgressBar
-            android:id="@+id/progress_bar"
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toBottomOf="@id/guideline" />
 
         <LinearLayout
-            android:id="@+id/details_layout"
+            android:id="@+id/detailsLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/movie_description_text"
+                android:id="@+id/movieDescriptionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp" />
@@ -55,7 +55,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/release_date_text"
+                    android:id="@+id/releaseDateText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp" />
@@ -76,21 +76,21 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/runtime_text"
+                    android:id="@+id/runtimeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp" />
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_actor"
+                android:id="@+id/recyclerViewActor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/recommended_movies_text"
+                android:id="@+id/recommendedMoviesText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -99,13 +99,13 @@
                 android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_recommended_movies"
+                android:id="@+id/recyclerViewRecommendedMovies"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp" />
 
             <TextView
-                android:id="@+id/video_text"
+                android:id="@+id/videoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -114,7 +114,7 @@
                 android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_videos"
+                android:id="@+id/recyclerViewVideos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp" />

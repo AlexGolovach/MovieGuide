@@ -67,9 +67,9 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
     }
 
     private fun initRecyclerActors() {
-        val context = recycler_view_actor.context
+        val context = recyclerViewActor.context
 
-        recycler_view_actor.apply {
+        recyclerViewActor.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             setHasFixedSize(true)
             addItemDecoration(DividerItemDecoration(context, RecyclerView.HORIZONTAL))
@@ -94,9 +94,9 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
     }
 
     private fun initRecyclerRecommendedMovies() {
-        val context = recycler_view_recommended_movies.context
+        val context = recyclerViewRecommendedMovies.context
 
-        recycler_view_recommended_movies.apply {
+        recyclerViewRecommendedMovies.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             setHasFixedSize(true)
 
@@ -124,8 +124,8 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
     }
 
     private fun initRecyclerVideos() {
-        val context = recycler_view_videos.context
-        recycler_view_videos.apply {
+        val context = recyclerViewVideos.context
+        recyclerViewVideos.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
             addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
@@ -135,13 +135,13 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
     }
 
     override fun onDownloadResultDetails(movie: MovieDetails, poster: Bitmap) {
-        release_date_text.text = movie.releaseDate
-        runtime_text.text = convertTime(movie.runtime)
-        movie_description_text.text = movie.description
+        releaseDateText.text = movie.releaseDate
+        runtimeText.text = convertTime(movie.runtime)
+        movieDescriptionText.text = movie.description
 
         activity?.apply {
-            poster_image?.setImageBitmap(poster)
-            collapsing_toolbar.title = movie.title
+            posterImage?.setImageBitmap(poster)
+            collapsingToolbar.title = movie.title
         }
     }
 
@@ -164,14 +164,14 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
     }
 
     override fun showLoading() {
-        progress_bar.visibility = View.VISIBLE
-        activity?.collapsing_toolbar?.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+        activity?.collapsingToolbar?.visibility = View.GONE
     }
 
     override fun hideLoading() {
-        progress_bar.visibility = View.GONE
-        details_layout.visibility = View.VISIBLE
-        activity?.collapsing_toolbar?.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+        detailsLayout.visibility = View.VISIBLE
+        activity?.collapsingToolbar?.visibility = View.VISIBLE
     }
 
     override fun onDestroy() {

@@ -6,7 +6,7 @@
     android:background="@drawable/nav_menu_header">
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/header_username"
+        android:id="@+id/headerUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

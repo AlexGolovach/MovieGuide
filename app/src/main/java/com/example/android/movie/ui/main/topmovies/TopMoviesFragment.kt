@@ -3,7 +3,6 @@ package com.example.android.movie.ui.main.topmovies
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView.VERTICAL
 import android.view.LayoutInflater
@@ -45,9 +44,9 @@ class TopMoviesFragment : Fragment(), ITopMoviesView {
     }
 
     private fun initRecycler() {
-        val context = recycler_view.context
+        val context = recyclerView.context
 
-        recycler_view.apply {
+        recyclerView.apply {
             layoutManager = LinearLayoutManager(context, VERTICAL, false)
             setHasFixedSize(true)
 
@@ -67,7 +66,7 @@ class TopMoviesFragment : Fragment(), ITopMoviesView {
     }
 
     override fun showLoading() {
-        progress_bar.visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
     }
 
     override fun onDownloadResult(movies: MovieList) {
@@ -81,9 +80,9 @@ class TopMoviesFragment : Fragment(), ITopMoviesView {
     }
 
     override fun hideLoading() {
-        if (progress_bar.visibility == View.VISIBLE) {
-            progress_bar.visibility = View.GONE
-            recycler_view.visibility = View.VISIBLE
+        if (progressBar.visibility == View.VISIBLE) {
+            progressBar.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
         }
     }
 

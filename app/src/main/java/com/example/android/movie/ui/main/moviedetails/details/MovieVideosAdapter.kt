@@ -36,7 +36,7 @@ class MovieVideosAdapter(private var items: List<String> = listOf()) :
 
         @SuppressLint("SetJavaScriptEnabled")
         fun bind(video: String) {
-            itemView.web_view.apply {
+            itemView.webView.apply {
                 loadData(video, "text/html", "utf-8")
                 settings.javaScriptEnabled = true
                 settings.allowFileAccess = true

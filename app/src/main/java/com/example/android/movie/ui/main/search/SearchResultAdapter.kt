@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.android.movie.R
-import com.example.android.network.models.movie.Movie
 import com.example.android.network.models.movie.MovieList
 import kotlinx.android.synthetic.main.item_view_search_result.view.*
 
@@ -22,7 +21,7 @@ class SearchResultAdapter(private var items: MovieList = MovieList(0,0,0, emptyL
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movie = items.results[position]
 
-        holder.itemView.movie_title.text = movie.title
+        holder.itemView.movieTitle.text = movie.title
     }
 
     fun updateItems(list: MovieList){

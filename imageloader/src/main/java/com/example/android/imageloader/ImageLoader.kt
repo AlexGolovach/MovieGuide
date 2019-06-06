@@ -72,7 +72,7 @@ class ImageLoader private constructor() {
         }
 
         override fun onPostExecute(bitmap: Bitmap) {
-            instance?.cache?.put(url, bitmap)
+            getInstance()?.cache?.put(url, bitmap)
             callback.onSuccess(url, bitmap)
 
         }

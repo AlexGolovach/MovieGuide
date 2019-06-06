@@ -9,7 +9,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/film_poster_image"
+            android:id="@+id/filmPosterImage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
@@ -25,12 +25,12 @@
             android:layout_margin="10dp"
             android:gravity="center"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@id/film_poster_image"
-            app:layout_constraintEnd_toEndOf="@id/film_poster_image"
-            app:layout_constraintStart_toStartOf="@id/film_poster_image">
+            app:layout_constraintBottom_toBottomOf="@id/filmPosterImage"
+            app:layout_constraintEnd_toEndOf="@id/filmPosterImage"
+            app:layout_constraintStart_toStartOf="@id/filmPosterImage">
 
             <TextView
-                android:id="@+id/film_title_text"
+                android:id="@+id/filmTitleText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -41,12 +41,12 @@
                 android:textColor="@color/orange"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/film_poster_image"
+                app:layout_constraintBottom_toBottomOf="@id/filmPosterImage"
                 app:layout_constraintEnd_toStartOf="@id/guideline"
-                app:layout_constraintStart_toStartOf="@id/film_poster_image" />
+                app:layout_constraintStart_toStartOf="@id/filmPosterImage" />
 
             <TextView
-                android:id="@+id/movie_rating_text"
+                android:id="@+id/movieRatingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
@@ -57,7 +57,7 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/star_image"
+                android:id="@+id/starImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"

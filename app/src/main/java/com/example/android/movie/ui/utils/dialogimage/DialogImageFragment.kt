@@ -44,7 +44,7 @@ class DialogImageFragment : DialogFragment(),
     }
 
     override fun onDownloadActorImage(image: Bitmap) {
-        actor_image.setImageBitmap(image)
+        actorImage.setImageBitmap(image)
     }
 
     override fun onDestroyView() {

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView.HORIZONTAL
 import android.view.LayoutInflater
@@ -64,9 +63,9 @@ class ActorFragment : Fragment(), IActorView {
     }
 
     private fun initRecyclerImages() {
-        val context = recycler_view_actor_images.context
+        val context = recyclerViewActorImages.context
 
-        recycler_view_actor_images.apply {
+        recyclerViewActorImages.apply {
             layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
             setHasFixedSize(true)
 
@@ -89,9 +88,9 @@ class ActorFragment : Fragment(), IActorView {
     }
 
     private fun initRecyclerMovies() {
-        val context = recycler_view_actor_movies.context
+        val context = recyclerViewActorMovies.context
 
-        recycler_view_actor_movies.apply {
+        recyclerViewActorMovies.apply {
             layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
             setHasFixedSize(true)
 
@@ -112,10 +111,10 @@ class ActorFragment : Fragment(), IActorView {
 
     override fun onDownloadResultDetails(actor: Actor, image: Bitmap) {
         activity?.apply {
-            poster_image?.setImageBitmap(image)
-            collapsing_toolbar.title = actor.name
+            posterImage?.setImageBitmap(image)
+            collapsingToolbar.title = actor.name
         }
-        actor_biography.text = actor.biography
+        actorBiography.text = actor.biography
     }
 
     override fun onDownloadImageURLs(images: ActorImages) {
@@ -133,18 +132,18 @@ class ActorFragment : Fragment(), IActorView {
     }
 
     override fun showLoading() {
-        progress_bar.visibility = View.VISIBLE
-        activity?.collapsing_toolbar?.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+        activity?.collapsingToolbar?.visibility = View.GONE
     }
 
     override fun hideLoading() {
-        progress_bar.visibility = View.GONE
-        actor_image.visibility = View.VISIBLE
-        actor_biography.visibility = View.VISIBLE
-        recycler_view_actor_images.visibility = View.VISIBLE
-        actor_movies_text.visibility = View.VISIBLE
-        recycler_view_actor_movies.visibility = View.VISIBLE
-        activity?.collapsing_toolbar?.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+        actorImage.visibility = View.VISIBLE
+        actorBiography.visibility = View.VISIBLE
+        recyclerViewActorImages.visibility = View.VISIBLE
+        actorMoviesText.visibility = View.VISIBLE
+        recyclerViewActorMovies.visibility = View.VISIBLE
+        activity?.collapsingToolbar?.visibility = View.VISIBLE
     }
 
     override fun onDestroy() {

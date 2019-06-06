@@ -43,10 +43,10 @@ class LoginFragment : Fragment(), ILoginView {
 
     private fun initListeners() {
         //TODO rename fields
-        edit_email.addTextChangedListener(object : TextWatcherAdapter() {
+        editEmail.addTextChangedListener(object : TextWatcherAdapter() {
             override fun afterTextChanged(p0: Editable?) {
 
-                edit_password.addTextChangedListener(object : TextWatcherAdapter() {
+                editPassword.addTextChangedListener(object : TextWatcherAdapter() {
                     override fun afterTextChanged(p0: Editable?) {
                         updateButtonState()
                     }
@@ -54,7 +54,7 @@ class LoginFragment : Fragment(), ILoginView {
             }
         })
 
-        sign_up.setOnClickListener {
+        signUp.setOnClickListener {
             fragmentManager?.beginTransaction()
                 ?.addToBackStack(SignUpFragment::class.java.name)
                 ?.replace(
@@ -64,8 +64,8 @@ class LoginFragment : Fragment(), ILoginView {
                 )?.commit()
         }
 
-        btn_login.setOnClickListener {
-            loginPresenter.findUser(edit_email.text.toString(), edit_password.text.toString(), save_acc_check_box.isChecked)
+        btnLogin.setOnClickListener {
+            loginPresenter.findUser(editEmail.text.toString(), editPassword.text.toString(), saveAccCheckBox.isChecked)
         }
     }
 
@@ -81,7 +81,7 @@ class LoginFragment : Fragment(), ILoginView {
     }
 
     private fun updateButtonState() {
-        btn_login.isEnabled = true
+        btnLogin.isEnabled = true
     }
 
     private fun initToolbar(view: View) {

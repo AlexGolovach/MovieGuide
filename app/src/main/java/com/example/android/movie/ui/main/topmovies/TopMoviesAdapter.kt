@@ -52,21 +52,21 @@ class TopMoviesAdapter(private var items: MovieList = MovieList(0, 0, 0, emptyLi
                 ImageLoader.getInstance()?.load(it, object : Callback {
                     override fun onSuccess(url: String, bitmap: Bitmap) {
                         if (imageUrl == url) {
-                            itemView.film_poster_image.background = null
-                            itemView.film_poster_image.setImageBitmap(bitmap)
+                            itemView.filmPosterImage.background = null
+                            itemView.filmPosterImage.setImageBitmap(bitmap)
                         }
                     }
 
                     override fun onError(url: String, throwable: Throwable) {
                         if (imageUrl == url) {
-                            itemView.film_poster_image.setImageResource(R.drawable.image_placeholder)
+                            itemView.filmPosterImage.setImageResource(R.drawable.image_placeholder)
                         }
                     }
                 })
             }
 
-            itemView.film_title_text.text = movie.title
-            itemView.movie_rating_text.text = movie.rating.toString()
+            itemView.filmTitleText.text = movie.title
+            itemView.movieRatingText.text = movie.rating.toString()
         }
     }
 

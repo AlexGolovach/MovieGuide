@@ -11,14 +11,14 @@
         android:gravity="center">
 
         <ImageView
-            android:id="@+id/poster_movie_image"
+            android:id="@+id/posterMovieImage"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:scaleType="centerCrop"
             android:src="@drawable/image_placeholder" />
 
         <TextView
-            android:id="@+id/movie_title_text"
+            android:id="@+id/movieTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -34,7 +34,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/movie_rating_text"
+                android:id="@+id/movieRatingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"

@@ -16,7 +16,7 @@
             app:layout_constraintGuide_percent="0.85" />
 
         <ProgressBar
-            android:id="@+id/progress_bar"
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="visible"
@@ -26,7 +26,7 @@
             app:layout_constraintTop_toBottomOf="@id/guideline" />
 
         <ImageView
-            android:id="@+id/actor_image"
+            android:id="@+id/actorImage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
@@ -36,27 +36,27 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/actor_biography"
+            android:id="@+id/actorBiography"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/actor_image" />
+            app:layout_constraintTop_toBottomOf="@id/actorImage" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_actor_images"
+            android:id="@+id/recyclerViewActorImages"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/actor_biography" />
+            app:layout_constraintTop_toBottomOf="@id/actorBiography" />
 
         <TextView
-            android:id="@+id/actor_movies_text"
+            android:id="@+id/actorMoviesText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -65,17 +65,17 @@
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recycler_view_actor_images" />
+            app:layout_constraintTop_toBottomOf="@id/recyclerViewActorImages" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_actor_movies"
+            android:id="@+id/recyclerViewActorMovies"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/actor_movies_text" />
+            app:layout_constraintTop_toBottomOf="@id/actorMoviesText" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

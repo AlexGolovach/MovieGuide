@@ -52,14 +52,14 @@ class ActorImageAdapter(private var items: ActorImages = ActorImages(emptyList()
                 ImageLoader.getInstance()?.load(it, object : Callback{
                     override fun onSuccess(url: String, bitmap: Bitmap) {
                         if (imageUrl == url){
-                            itemView.actor_image.background = null
-                            itemView.actor_image.setImageBitmap(bitmap)
+                            itemView.actorImage.background = null
+                            itemView.actorImage.setImageBitmap(bitmap)
                         }
                     }
 
                     override fun onError(url: String, throwable: Throwable) {
                         if (imageUrl == url){
-                            itemView.actor_image.setImageResource(R.drawable.image_placeholder)
+                            itemView.actorImage.setImageResource(R.drawable.image_placeholder)
                         }
                     }
                 })

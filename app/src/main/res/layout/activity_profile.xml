@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_layout"
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,7 +20,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <TextView
-        android:id="@+id/username_text"
+        android:id="@+id/usernameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -29,7 +29,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar_layout" />
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 
     <TextView
         android:id="@+id/username"
@@ -38,10 +38,10 @@
         android:layout_margin="5dp"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/username_text" />
+        app:layout_constraintTop_toBottomOf="@id/usernameText" />
 
     <View
-        android:id="@+id/first_divider"
+        android:id="@+id/firstDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_margin="3dp"
@@ -51,7 +51,7 @@
         app:layout_constraintTop_toBottomOf="@id/username" />
 
     <TextView
-        android:id="@+id/email_text"
+        android:id="@+id/emailText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -60,7 +60,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/first_divider" />
+        app:layout_constraintTop_toBottomOf="@id/firstDivider" />
 
     <TextView
         android:id="@+id/email"
@@ -69,10 +69,10 @@
         android:layout_margin="5dp"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email_text" />
+        app:layout_constraintTop_toBottomOf="@id/emailText" />
 
     <View
-        android:id="@+id/second_divider"
+        android:id="@+id/secondDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_margin="3dp"
@@ -82,7 +82,7 @@
         app:layout_constraintTop_toBottomOf="@id/email" />
 
     <TextView
-        android:id="@+id/password_text"
+        android:id="@+id/passwordText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -91,7 +91,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/second_divider" />
+        app:layout_constraintTop_toBottomOf="@id/secondDivider" />
 
     <TextView
         android:id="@+id/password"
@@ -100,10 +100,10 @@
         android:layout_margin="5dp"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/password_text" />
+        app:layout_constraintTop_toBottomOf="@id/passwordText" />
 
     <View
-        android:id="@+id/last_divider"
+        android:id="@+id/lastDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_margin="3dp"

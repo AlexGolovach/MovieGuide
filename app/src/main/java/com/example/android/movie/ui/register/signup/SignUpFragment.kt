@@ -37,15 +37,15 @@ class SignUpFragment : Fragment(), ISignUpView {
 
         signUpPresenter = SignUpPresenter(this)
 
-        btn_sign_up.setOnClickListener {
+        btnSignUp.setOnClickListener {
             createUser()
         }
     }
 
     private fun createUser() {
-        val username = edit_username.text.toString()
-        val email = edit_email.text.toString()
-        val password = edit_password.text.toString()
+        val username = editUsername.text.toString()
+        val email = editEmail.text.toString()
+        val password = editPassword.text.toString()
 
         val user = User(
             IdGenerator.generateId(),
@@ -54,7 +54,7 @@ class SignUpFragment : Fragment(), ISignUpView {
             password
         )
 
-        signUpPresenter.createUser(user, save_acc_check_box.isChecked)
+        signUpPresenter.createUser(user, saveAccCheckBox.isChecked)
     }
 
     private fun initToolbar(view: View) {

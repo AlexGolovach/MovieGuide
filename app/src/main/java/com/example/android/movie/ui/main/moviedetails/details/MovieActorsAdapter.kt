@@ -60,21 +60,21 @@ class MovieActorsAdapter(
                 ImageLoader.getInstance()?.load(it, object : Callback {
                     override fun onSuccess(url: String, bitmap: Bitmap) {
                         if (imageUrl == url) {
-                            itemView.actor_image.background = null
-                            itemView.actor_image.setImageBitmap(bitmap)
+                            itemView.actorImage.background = null
+                            itemView.actorImage.setImageBitmap(bitmap)
                         }
                     }
 
                     override fun onError(url: String, throwable: Throwable) {
                         if (imageUrl == url) {
-                            itemView.actor_image.setImageResource(R.drawable.actor_placeholder)
+                            itemView.actorImage.setImageResource(R.drawable.actor_placeholder)
                         }
                     }
                 })
             }
 
-            itemView.actor_name.text = actor.name
-            itemView.actor_character.text = actor.character
+            itemView.actorName.text = actor.name
+            itemView.actorCharacter.text = actor.character
         }
     }
 
