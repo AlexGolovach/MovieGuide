@@ -1,6 +1,7 @@
 package com.example.android.network.httprequest
 
 import android.os.AsyncTask
+import com.example.android.network.NetworkCallback
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.URL
@@ -26,7 +27,7 @@ class HttpRequest private constructor(){
         }
     }
 
-    fun load(url: String, callback: Callback) {
+    fun load(url: String, callback: NetworkCallback<String>) {
         if (url != "") {
             LoaderTask(callback).execute(url)
         } else {
@@ -35,7 +36,7 @@ class HttpRequest private constructor(){
         }
     }
 
-    private class LoaderTask(var callback: Callback) :
+    private class LoaderTask(var callback: NetworkCallback<String>) :
         AsyncTask<String, Void, String>() {
 
         lateinit var url: String

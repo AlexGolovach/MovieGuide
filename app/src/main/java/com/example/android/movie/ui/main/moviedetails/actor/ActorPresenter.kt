@@ -7,11 +7,10 @@ import com.example.android.movie.mvp.actor.IActorPresenter
 import com.example.android.movie.mvp.actor.IActorView
 import com.example.android.network.Converter.Companion.getImageUrl
 import com.example.android.network.Injector
+import com.example.android.network.NetworkCallback
 import com.example.android.network.models.actor.Actor
 import com.example.android.network.models.actor.ActorImages
 import com.example.android.network.models.movie.actormovies.ActorMovies
-import com.example.android.network.repository.actors.ActorsCallback
-import com.example.android.network.repository.movies.MoviesCallback
 
 class ActorPresenter(private var iActorView: IActorView?) :
     IActorPresenter {
@@ -20,7 +19,7 @@ class ActorPresenter(private var iActorView: IActorView?) :
         iActorView?.showLoading()
 
         Injector.getActorsRepositoryImpl()
-            .getInformationAboutActor(actorId, object : ActorsCallback<Actor> {
+            .getInformationAboutActor(actorId, object : NetworkCallback<Actor> {
                 override fun onSuccess(result: Actor) {
                     val imageUrl = result.image?.let { getImageUrl(it) }
 
@@ -47,7 +46,7 @@ class ActorPresenter(private var iActorView: IActorView?) :
 
     override fun onDownloadImageURLs(actorId: Int) {
         Injector.getActorsRepositoryImpl()
-            .getActorImages(actorId, object : ActorsCallback<ActorImages> {
+            .getActorImages(actorId, object : NetworkCallback<ActorImages> {
                 override fun onSuccess(result: ActorImages) {
                     iActorView?.onDownloadImageURLs(result)
                 }
@@ -61,7 +60,7 @@ class ActorPresenter(private var iActorView: IActorView?) :
 
     override fun onDownloadActorMovies(actorId: Int) {
         Injector.getMoviesRepositoryImpl()
-            .getActorMovies(actorId, object : MoviesCallback<ActorMovies> {
+            .getActorMovies(actorId, object : NetworkCallback<ActorMovies> {
                 override fun onSuccess(result: ActorMovies) {
                     iActorView?.onDownloadActorMovies(result)
                     iActorView?.hideLoading()

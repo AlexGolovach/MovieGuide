@@ -2,7 +2,7 @@ package com.example.android.network.repository.serials
 
 import com.example.android.network.APIClient
 import com.example.android.network.Converter
-import com.example.android.network.httprequest.Callback
+import com.example.android.network.NetworkCallback
 import com.example.android.network.httprequest.HttpRequest
 import com.example.android.network.models.SerialDetails
 import com.example.android.network.models.recommendedserials.RecommendSerialsList
@@ -11,11 +11,12 @@ import com.example.android.network.models.serial.actorserials.ActorSerials
 
 class SerialsRepositoryImpl : SerialsRepository {
 
-    override fun getPopularSerials(callback: SerialsCallback<SerialsList>) {
+    override fun getPopularSerials(callback: NetworkCallback<SerialsList>) {
 
-        HttpRequest.getInstance()?.load(APIClient.GET_POPULAR_SERIALS, object : Callback {
-            override fun onSuccess(json: String) {
-                callback.onSuccess(Converter.parsingJson(json, SerialsList::class.java))
+        HttpRequest.getInstance()?.load(APIClient.GET_POPULAR_SERIALS, object :
+            NetworkCallback<String> {
+            override fun onSuccess(result: String) {
+                callback.onSuccess(Converter.parsingJson(result, SerialsList::class.java))
             }
 
             override fun onError(throwable: Throwable) {
@@ -24,11 +25,12 @@ class SerialsRepositoryImpl : SerialsRepository {
         })
     }
 
-    override fun getSerialDetails(serialId: Int, callback: SerialsCallback<SerialDetails>) {
+    override fun getSerialDetails(serialId: Int, callback: NetworkCallback<SerialDetails>) {
 
-        HttpRequest.getInstance()?.load(APIClient.getSerialDetails(serialId), object : Callback {
-            override fun onSuccess(json: String) {
-                callback.onSuccess(Converter.parsingJson(json, SerialDetails::class.java))
+        HttpRequest.getInstance()?.load(APIClient.getSerialDetails(serialId), object :
+            NetworkCallback<String> {
+            override fun onSuccess(result: String) {
+                callback.onSuccess(Converter.parsingJson(result, SerialDetails::class.java))
             }
 
             override fun onError(throwable: Throwable) {
@@ -39,15 +41,16 @@ class SerialsRepositoryImpl : SerialsRepository {
 
     override fun getRecommendedSerialsForSerial(
         serialId: Int,
-        callback: SerialsCallback<RecommendSerialsList>
+        callback: NetworkCallback<RecommendSerialsList>
     ) {
 
         HttpRequest.getInstance()
-            ?.load(APIClient.getRecommendedSerialsForSerial(serialId), object : Callback {
-                override fun onSuccess(json: String) {
+            ?.load(APIClient.getRecommendedSerialsForSerial(serialId), object :
+                NetworkCallback<String> {
+                override fun onSuccess(result: String) {
                     callback.onSuccess(
                         Converter.parsingJson(
-                            json,
+                            result,
                             RecommendSerialsList::class.java
                         )
                     )
@@ -59,11 +62,12 @@ class SerialsRepositoryImpl : SerialsRepository {
             })
     }
 
-    override fun getActorSerials(actorId: Int, callback: SerialsCallback<ActorSerials>) {
+    override fun getActorSerials(actorId: Int, callback: NetworkCallback<ActorSerials>) {
 
-        HttpRequest.getInstance()?.load(APIClient.getSerialsWithActor(actorId), object : Callback {
-            override fun onSuccess(json: String) {
-                callback.onSuccess(Converter.parsingJson(json, ActorSerials::class.java))
+        HttpRequest.getInstance()?.load(APIClient.getSerialsWithActor(actorId), object :
+            NetworkCallback<String> {
+            override fun onSuccess(result: String) {
+                callback.onSuccess(Converter.parsingJson(result, ActorSerials::class.java))
             }
 
             override fun onError(throwable: Throwable) {
@@ -72,12 +76,13 @@ class SerialsRepositoryImpl : SerialsRepository {
         })
     }
 
-    override fun getSearchResultSerials(query: String, callback: SerialsCallback<SerialsList>) {
+    override fun getSearchResultSerials(query: String, callback: NetworkCallback<SerialsList>) {
 
         HttpRequest.getInstance()
-            ?.load(APIClient.getSearchResultForSerials(query), object : Callback {
-                override fun onSuccess(json: String) {
-                    callback.onSuccess(Converter.parsingJson(json, SerialsList::class.java))
+            ?.load(APIClient.getSearchResultForSerials(query), object :
+                NetworkCallback<String> {
+                override fun onSuccess(result: String) {
+                    callback.onSuccess(Converter.parsingJson(result, SerialsList::class.java))
                 }
 
                 override fun onError(throwable: Throwable) {

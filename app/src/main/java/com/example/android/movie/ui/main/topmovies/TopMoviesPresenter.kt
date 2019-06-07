@@ -3,8 +3,8 @@ package com.example.android.movie.ui.main.topmovies
 import com.example.android.movie.mvp.topmovies.ITopMoviesPresenter
 import com.example.android.movie.mvp.topmovies.ITopMoviesView
 import com.example.android.network.Injector
+import com.example.android.network.NetworkCallback
 import com.example.android.network.models.movie.MovieList
-import com.example.android.network.repository.movies.MoviesCallback
 
 class TopMoviesPresenter(private var topMoviesView: ITopMoviesView?) :
     ITopMoviesPresenter {
@@ -12,7 +12,7 @@ class TopMoviesPresenter(private var topMoviesView: ITopMoviesView?) :
     override fun onDownloadMovies() {
 
         Injector.getMoviesRepositoryImpl().loadPopularMovies(object :
-            MoviesCallback<MovieList> {
+            NetworkCallback<MovieList> {
             override fun onSuccess(result: MovieList) {
                 topMoviesView?.onDownloadResult(result)
                 topMoviesView?.hideLoading()
@@ -33,7 +33,7 @@ class TopMoviesPresenter(private var topMoviesView: ITopMoviesView?) :
             if (it.length >= 3) {
                 Injector.getMoviesRepositoryImpl()
                     .searchMovie(query, object :
-                        MoviesCallback<MovieList> {
+                        NetworkCallback<MovieList> {
                         override fun onSuccess(result: MovieList) {
                             for (movie in result.results) {
                                 if (movie.title?.toLowerCase()!!.contains(userInput.toString())) {
@@ -50,8 +50,7 @@ class TopMoviesPresenter(private var topMoviesView: ITopMoviesView?) :
         }
     }
 
-
-    override fun onDestroy(){
+    override fun onDestroy() {
         topMoviesView = null
     }
 

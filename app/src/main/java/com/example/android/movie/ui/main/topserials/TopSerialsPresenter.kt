@@ -3,8 +3,8 @@ package com.example.android.movie.ui.main.topserials
 import com.example.android.movie.mvp.topserials.ITopSerialsPresenter
 import com.example.android.movie.mvp.topserials.ITopSerialsView
 import com.example.android.network.Injector
+import com.example.android.network.NetworkCallback
 import com.example.android.network.models.serial.SerialsList
-import com.example.android.network.repository.serials.SerialsCallback
 
 class TopSerialsPresenter(private var topSerialsView: ITopSerialsView?) :
     ITopSerialsPresenter {
@@ -13,7 +13,7 @@ class TopSerialsPresenter(private var topSerialsView: ITopSerialsView?) :
         topSerialsView?.showLoading()
 
         Injector.getSerialsRepositoryImpl().getPopularSerials(object :
-            SerialsCallback<SerialsList> {
+            NetworkCallback<SerialsList> {
             override fun onSuccess(result: SerialsList) {
                 topSerialsView?.onDownloadResult(result)
                 topSerialsView?.hideLoading()
@@ -34,7 +34,7 @@ class TopSerialsPresenter(private var topSerialsView: ITopSerialsView?) :
             if (it.length >= 3) {
                 Injector.getSerialsRepositoryImpl()
                     .getSearchResultSerials(query, object :
-                        SerialsCallback<SerialsList> {
+                        NetworkCallback<SerialsList> {
                         override fun onSuccess(result: SerialsList) {
                             for (movie in result.results) {
                                 if (movie.title?.toLowerCase()!!.contains(userInput.toString())) {

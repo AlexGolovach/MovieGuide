@@ -2,7 +2,7 @@ package com.example.android.network.repository.actors
 
 import com.example.android.network.APIClient
 import com.example.android.network.Converter
-import com.example.android.network.httprequest.Callback
+import com.example.android.network.NetworkCallback
 import com.example.android.network.httprequest.HttpRequest
 import com.example.android.network.models.actor.Actor
 import com.example.android.network.models.actor.ActorImages
@@ -11,12 +11,13 @@ import java.lang.NullPointerException
 
 class ActorsRepositoryImpl : ActorsRepository {
 
-    override fun getInformationAboutActor(actorId: Int, callback: ActorsCallback<Actor>) {
+    override fun getInformationAboutActor(actorId: Int, callback: NetworkCallback<Actor>) {
 
-        HttpRequest.getInstance()?.load(APIClient.getInformationAboutActor(actorId), object : Callback {
-            override fun onSuccess(json: String) {
+        HttpRequest.getInstance()?.load(APIClient.getInformationAboutActor(actorId), object :
+            NetworkCallback<String> {
+            override fun onSuccess(result: String) {
 
-                callback.onSuccess(Converter.parsingJson(json, Actor::class.java))
+                callback.onSuccess(Converter.parsingJson(result, Actor::class.java))
             }
 
             override fun onError(throwable: Throwable) {
@@ -27,11 +28,12 @@ class ActorsRepositoryImpl : ActorsRepository {
         })
     }
 
-    override fun getActorImages(actorId: Int, callback: ActorsCallback<ActorImages>) {
+    override fun getActorImages(actorId: Int, callback: NetworkCallback<ActorImages>) {
 
-        HttpRequest.getInstance()?.load(APIClient.getImagesWithActor(actorId), object : Callback {
-            override fun onSuccess(json: String) {
-                callback.onSuccess(Converter.parsingJson(json, ActorImages::class.java))
+        HttpRequest.getInstance()?.load(APIClient.getImagesWithActor(actorId), object :
+            NetworkCallback<String> {
+            override fun onSuccess(result: String) {
+                callback.onSuccess(Converter.parsingJson(result, ActorImages::class.java))
             }
 
             override fun onError(throwable: Throwable) {
@@ -40,11 +42,12 @@ class ActorsRepositoryImpl : ActorsRepository {
         })
     }
 
-    override fun getActorsSquad(movieId: Int, callback: ActorsCallback<MovieActorSquad>) {
+    override fun getActorsSquad(movieId: Int, callback: NetworkCallback<MovieActorSquad>) {
 
-        HttpRequest.getInstance()?.load(APIClient.getActorsSquad(movieId), object : Callback {
-            override fun onSuccess(json: String) {
-                callback.onSuccess(Converter.parsingJson(json, MovieActorSquad::class.java))
+        HttpRequest.getInstance()?.load(APIClient.getActorsSquad(movieId), object :
+            NetworkCallback<String> {
+            override fun onSuccess(result: String) {
+                callback.onSuccess(Converter.parsingJson(result, MovieActorSquad::class.java))
             }
 
             override fun onError(throwable: Throwable) {
