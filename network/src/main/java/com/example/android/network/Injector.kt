@@ -4,6 +4,8 @@ import com.example.android.network.repository.actors.ActorsRepository
 import com.example.android.network.repository.actors.ActorsRepositoryImpl
 import com.example.android.network.repository.movies.MoviesRepository
 import com.example.android.network.repository.movies.MoviesRepositoryImpl
+import com.example.android.network.repository.serials.SerialsRepository
+import com.example.android.network.repository.serials.SerialsRepositoryImpl
 import com.example.android.network.repository.videos.VideosRepository
 import com.example.android.network.repository.videos.VideosRepositoryImpl
 
@@ -13,6 +15,7 @@ class Injector private constructor() {
         MoviesRepositoryImpl()
     private val actorsRepositoryImpl: ActorsRepositoryImpl = ActorsRepositoryImpl()
     private val videosRepositoryImpl: VideosRepositoryImpl = VideosRepositoryImpl()
+    private val serialsRepositoryImpl: SerialsRepositoryImpl = SerialsRepositoryImpl()
 
     companion object {
 
@@ -41,6 +44,10 @@ class Injector private constructor() {
 
         fun getVideosRepositoryImpl(): VideosRepository {
             return getInstance()!!.videosRepositoryImpl
+        }
+
+        fun getSerialsRepositoryImpl(): SerialsRepository {
+            return getInstance()!!.serialsRepositoryImpl
         }
     }
 }

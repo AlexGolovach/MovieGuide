@@ -9,7 +9,7 @@ data class Actor(
     @SerializedName("known_for_department")
     val knownForDepartment: String?,
 
-    @SerializedName("death_day")
+    @SerializedName("deathday")
     val deathDay: String?,
 
     @SerializedName("id")
