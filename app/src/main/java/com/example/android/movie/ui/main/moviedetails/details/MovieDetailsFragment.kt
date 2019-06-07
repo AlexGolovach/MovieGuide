@@ -3,6 +3,7 @@ package com.example.android.movie.ui.main.moviedetails.details
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -21,7 +22,6 @@ import com.example.android.network.models.movie.MovieList
 import com.example.android.network.models.moviedetails.MovieDetails
 import com.example.android.network.models.moviesquad.Cast
 import com.example.android.network.models.moviesquad.MovieActorSquad
-import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 
 class MovieDetailsFragment : Fragment(), IMovieDetailsView {
@@ -50,6 +50,8 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
             MovieDetailsPresenter(this)
 
         getData()
+
+        initToolbar()
         initRecyclerActors()
         initRecyclerRecommendedMovies()
         initRecyclerVideos()
@@ -64,6 +66,12 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
             movieDetailsPresenter.onDownloadRecommendedMovies(it)
             movieDetailsPresenter.onDownloadVideo(it)
         }
+    }
+
+    private fun initToolbar() {
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+
+        collapsingToolbar.setExpandedTitleColor(resources.getColor(R.color.white))
     }
 
     private fun initRecyclerActors() {
@@ -82,8 +90,8 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
                         getBundleWithId("ACTOR_ID", actor.id)
 
                     fragmentManager?.beginTransaction()
-                        ?.addToBackStack(ActorFragment::class.java.name)
-                        ?.replace(R.id.container, actorFragment, ActorFragment::class.java.name)
+                        ?.addToBackStack(actor.name)
+                        ?.replace(R.id.container, actorFragment, actor.name)
                         ?.commit()
                 }
             }
@@ -108,11 +116,11 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
                         getBundleWithId("MOVIE_ID", movie.id)
 
                     fragmentManager?.beginTransaction()
-                        ?.addToBackStack(MovieDetailsFragment::class.java.name)
+                        ?.addToBackStack(movie.title)
                         ?.replace(
                             R.id.container,
                             movieDetailsFragment,
-                            MovieDetailsFragment::class.java.name
+                            movie.title
                         )
                         ?.commit()
                 }
@@ -138,11 +146,8 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
         releaseDateText.text = movie.releaseDate
         runtimeText.text = convertTime(movie.runtime)
         movieDescriptionText.text = movie.description
-
-        activity?.apply {
-            posterImage?.setImageBitmap(poster)
-            collapsingToolbar.title = movie.title
-        }
+        posterImage?.setImageBitmap(poster)
+        collapsingToolbar.title = movie.title
     }
 
     override fun onDownloadActorSquad(actorSquad: MovieActorSquad) {
@@ -165,13 +170,14 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
 
     override fun showLoading() {
         progressBar.visibility = View.VISIBLE
-        activity?.collapsingToolbar?.visibility = View.GONE
+        detailsLayout.visibility = View.GONE
+        collapsingToolbar.visibility = View.GONE
     }
 
     override fun hideLoading() {
         progressBar.visibility = View.GONE
         detailsLayout.visibility = View.VISIBLE
-        activity?.collapsingToolbar?.visibility = View.VISIBLE
+        collapsingToolbar.visibility = View.VISIBLE
     }
 
     override fun onDestroy() {

@@ -21,6 +21,7 @@ class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
     private var youTubeVideos = mutableListOf<String>()
 
     override fun onDownloadMovieDetails(movieId: Int) {
+        iMovieDetailsView?.showLoading()
 
         Injector.getMoviesRepositoryImpl()
             .getInformationAboutMovie(movieId, object :
@@ -37,6 +38,7 @@ class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
 
                             override fun onError(url: String, throwable: Throwable) {
                                 iMovieDetailsView?.onDownloadDetailsError(throwable)
+                                iMovieDetailsView?.hideLoading()
                             }
                         })
                     }
@@ -44,7 +46,7 @@ class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
 
                 override fun onError(throwable: Throwable) {
                     iMovieDetailsView?.onDownloadDetailsError(throwable)
-                    iMovieDetailsView?.showLoading()
+                    iMovieDetailsView?.hideLoading()
                 }
             })
     }
@@ -58,7 +60,7 @@ class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
 
                 override fun onError(throwable: Throwable) {
                     iMovieDetailsView?.onDownloadDetailsError(throwable)
-                    iMovieDetailsView?.showLoading()
+                    iMovieDetailsView?.hideLoading()
                 }
             })
     }
@@ -68,12 +70,11 @@ class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
             .getRecommendedMoviesForMovie(movieId, object : MoviesCallback<MovieList> {
                 override fun onSuccess(result: MovieList) {
                     iMovieDetailsView?.onDownloadRecommendedMovies(result)
-                    iMovieDetailsView?.hideLoading()
                 }
 
                 override fun onError(throwable: Throwable) {
                     iMovieDetailsView?.onDownloadDetailsError(throwable)
-                    iMovieDetailsView?.showLoading()
+                    iMovieDetailsView?.hideLoading()
                 }
             })
     }
@@ -92,7 +93,8 @@ class MovieDetailsPresenter(private var iMovieDetailsView: IMovieDetailsView?) :
             }
 
             override fun onError(error: Throwable) {
-                iMovieDetailsView?.showLoading()
+                iMovieDetailsView?.onDownloadDetailsError(error)
+                iMovieDetailsView?.hideLoading()
             }
         })
     }

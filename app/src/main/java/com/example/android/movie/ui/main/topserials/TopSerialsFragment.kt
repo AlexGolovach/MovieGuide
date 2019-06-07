@@ -1,7 +1,6 @@
-package com.example.android.movie.ui.main.topmovies
+package com.example.android.movie.ui.main.topserials
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
@@ -12,50 +11,48 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.android.movie.R
-import com.example.android.movie.mvp.topmovies.ITopMoviesPresenter
-import com.example.android.movie.mvp.topmovies.ITopMoviesView
+import com.example.android.movie.mvp.topserials.ITopSerialsPresenter
+import com.example.android.movie.mvp.topserials.ITopSerialsView
 import com.example.android.movie.search.IFragmentListener
 import com.example.android.movie.search.ISearch
-import com.example.android.movie.ui.main.moviedetails.DetailsActivity
-import com.example.android.network.models.movie.Movie
-import com.example.android.network.models.movie.MovieList
-import kotlinx.android.synthetic.main.fragment_top_movies.*
-import java.lang.NullPointerException
+import com.example.android.network.models.serial.Serial
+import com.example.android.network.models.serial.SerialsList
+import kotlinx.android.synthetic.main.fragment_top_serials.*
 
-class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
+class TopSerialsFragment : Fragment(), ITopSerialsView,
+    ISearch {
 
-    private lateinit var topMoviesPresenter: ITopMoviesPresenter
+    private lateinit var topSerialsPresenter: ITopSerialsPresenter
+    private lateinit var topAdapter: TopSerialsAdapter
+    private lateinit var searchResultAdapter: SearchResultSerialsAdapter
 
-    private lateinit var topAdapter: TopMoviesAdapter
-    private lateinit var searchResultAdapter: SearchResultMoviesAdapter
-
-    private lateinit var iFragmentListener: IFragmentListener
+    private var iFragmentListener: IFragmentListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         iFragmentListener = context as IFragmentListener
-        iFragmentListener.addiSearch(this)
+        iFragmentListener!!.addiSearch(this)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_top_movies, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_top_serials, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        topAdapter = TopMoviesAdapter()
-        topMoviesPresenter = TopMoviesPresenter(this)
+        topAdapter = TopSerialsAdapter()
+        topSerialsPresenter = TopSerialsPresenter(this)
 
         getData()
         initRecycler()
-        initSearchResultRecycler()
+        initResultRecycler()
     }
 
     private fun getData() {
-        topMoviesPresenter.onDownloadMovies()
+        topSerialsPresenter.onDownloadSerials()
     }
 
     private fun initRecycler() {
@@ -65,13 +62,9 @@ class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
             layoutManager = LinearLayoutManager(context, VERTICAL, false)
             setHasFixedSize(true)
 
-            val listener = object : TopMoviesAdapter.Listener {
-                override fun onItemClicked(movie: Movie) {
-                    val intent = Intent(activity, DetailsActivity::class.java)
+            val listener = object : TopSerialsAdapter.Listener {
+                override fun onItemClicked(serial: Serial) {
 
-                    intent.putExtra("MOVIE_ID", movie.id)
-
-                    startActivity(intent)
                 }
             }
 
@@ -80,23 +73,19 @@ class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
         }
     }
 
-    private fun initSearchResultRecycler() {
+    private fun initResultRecycler() {
         val context = searchResultRecyclerView.context
 
-        searchResultAdapter = SearchResultMoviesAdapter()
+        searchResultAdapter = SearchResultSerialsAdapter()
 
         searchResultRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, VERTICAL, false)
             setHasFixedSize(true)
             addItemDecoration(DividerItemDecoration(context, VERTICAL))
 
-            val listener = object : SearchResultMoviesAdapter.OpenListener {
-                override fun onItemClickedListener(movie: Movie) {
-                    val intent = Intent(activity, DetailsActivity::class.java)
+            val listener = object : SearchResultSerialsAdapter.OpenListener {
+                override fun onItemClickedListener(serial: Serial) {
 
-                    intent.putExtra("MOVIE_ID", movie.id)
-
-                    startActivity(intent)
                 }
             }
 
@@ -109,8 +98,8 @@ class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
         progressBar.visibility = View.VISIBLE
     }
 
-    override fun onDownloadResult(movies: MovieList) {
-        topAdapter.setItems(movies)
+    override fun onDownloadResult(serials: SerialsList) {
+        topAdapter.setItems(serials)
     }
 
     override fun onTextQuery(text: String) {
@@ -120,17 +109,17 @@ class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
         } else {
             recyclerView.visibility = View.GONE
             searchResultRecyclerView.visibility = View.VISIBLE
-            topMoviesPresenter.onSearchMovies(text)
+            topSerialsPresenter.onSearchSerials(text)
         }
     }
 
-    override fun onSearchResult(result: MovieList) {
+    override fun onSearchResult(result: SerialsList) {
         searchResultAdapter.updateItems(result)
     }
 
     override fun onDownloadError(throwable: Throwable) {
         if (throwable is NullPointerException) {
-            Toast.makeText(activity, "No movies", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "No serials", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -143,11 +132,11 @@ class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
 
     override fun onDetach() {
         super.onDetach()
-        iFragmentListener.removeISearch(this)
+        iFragmentListener?.removeISearch(this)
     }
 
     override fun onDestroy() {
-        topMoviesPresenter.onDestroy()
+        topSerialsPresenter.onDestroy()
 
         super.onDestroy()
     }

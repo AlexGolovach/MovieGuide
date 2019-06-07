@@ -8,4 +8,6 @@ interface ITopMoviesView: ILoadingView {
     fun onDownloadResult(movies: MovieList)
 
     fun onDownloadError(throwable: Throwable)
+
+    fun onSearchResult(result: MovieList)
 }

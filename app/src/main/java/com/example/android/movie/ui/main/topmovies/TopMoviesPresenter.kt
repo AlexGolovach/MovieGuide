@@ -25,6 +25,32 @@ class TopMoviesPresenter(private var topMoviesView: ITopMoviesView?) :
         })
     }
 
+    override fun onSearchMovies(query: String?) {
+
+        val userInput = query?.toLowerCase()
+
+        query?.let {
+            if (it.length >= 3) {
+                Injector.getMoviesRepositoryImpl()
+                    .searchMovie(query, object :
+                        MoviesCallback<MovieList> {
+                        override fun onSuccess(result: MovieList) {
+                            for (movie in result.results) {
+                                if (movie.title?.toLowerCase()!!.contains(userInput.toString())) {
+                                    topMoviesView?.onSearchResult(result)
+                                }
+                            }
+                        }
+
+                        override fun onError(throwable: Throwable) {
+                            topMoviesView?.onDownloadError(throwable)
+                        }
+                    })
+            }
+        }
+    }
+
+
     override fun onDestroy(){
         topMoviesView = null
     }

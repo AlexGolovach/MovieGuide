@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView.HORIZONTAL
 import android.view.LayoutInflater
@@ -21,7 +22,6 @@ import com.example.android.network.models.actor.ActorImages
 import com.example.android.network.models.actor.Image
 import com.example.android.network.models.movie.actormovies.ActorMovies
 import com.example.android.network.models.movie.actormovies.Cast
-import kotlinx.android.synthetic.main.activity_details.*
 import kotlinx.android.synthetic.main.fragment_actor.*
 
 class ActorFragment : Fragment(), IActorView {
@@ -47,6 +47,8 @@ class ActorFragment : Fragment(), IActorView {
         actorPresenter = ActorPresenter(this)
 
         getData()
+
+        initToolbar()
         initRecyclerImages()
         initRecyclerMovies()
     }
@@ -60,6 +62,12 @@ class ActorFragment : Fragment(), IActorView {
             actorPresenter.onDownloadImageURLs(it)
             actorPresenter.onDownloadActorMovies(it)
         }
+    }
+
+    private fun initToolbar() {
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+
+        collapsingToolbar.setExpandedTitleColor(resources.getColor(R.color.white))
     }
 
     private fun initRecyclerImages() {
@@ -110,10 +118,8 @@ class ActorFragment : Fragment(), IActorView {
     }
 
     override fun onDownloadResultDetails(actor: Actor, image: Bitmap) {
-        activity?.apply {
-            posterImage?.setImageBitmap(image)
-            collapsingToolbar.title = actor.name
-        }
+        posterImage?.setImageBitmap(image)
+        collapsingToolbar.title = actor.name
         actorBiography.text = actor.biography
     }
 
@@ -133,17 +139,20 @@ class ActorFragment : Fragment(), IActorView {
 
     override fun showLoading() {
         progressBar.visibility = View.VISIBLE
-        activity?.collapsingToolbar?.visibility = View.GONE
+        actorBiography.visibility = View.GONE
+        recyclerViewActorImages.visibility = View.GONE
+        actorMoviesText.visibility = View.GONE
+        recyclerViewActorMovies.visibility = View.GONE
+        collapsingToolbar.visibility = View.GONE
     }
 
     override fun hideLoading() {
         progressBar.visibility = View.GONE
-        actorImage.visibility = View.VISIBLE
         actorBiography.visibility = View.VISIBLE
         recyclerViewActorImages.visibility = View.VISIBLE
         actorMoviesText.visibility = View.VISIBLE
         recyclerViewActorMovies.visibility = View.VISIBLE
-        activity?.collapsingToolbar?.visibility = View.VISIBLE
+        collapsingToolbar.visibility = View.VISIBLE
     }
 
     override fun onDestroy() {

@@ -21,10 +21,7 @@ class DetailsActivity : AppCompatActivity() {
         )
 
         supportFragmentManager.beginTransaction()
-            .addToBackStack(MovieDetailsFragment::class.java.name)
-            .replace(R.id.container, movieDetailsFragment, MovieDetailsFragment::class.java.name)
+            .replace(R.id.container, movieDetailsFragment)
             .commit()
-
-        setSupportActionBar(toolbar)
     }
 }

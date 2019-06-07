@@ -17,6 +17,8 @@ class ActorPresenter(private var iActorView: IActorView?) :
     IActorPresenter {
 
     override fun onDownloadActorDetails(actorId: Int) {
+        iActorView?.showLoading()
+
         Injector.getActorsRepositoryImpl()
             .getInformationAboutActor(actorId, object : ActorsCallback<Actor> {
                 override fun onSuccess(result: Actor) {
@@ -26,11 +28,11 @@ class ActorPresenter(private var iActorView: IActorView?) :
                         ImageLoader.getInstance()?.load(it, object : Callback {
                             override fun onSuccess(url: String, bitmap: Bitmap) {
                                 iActorView?.onDownloadResultDetails(result, bitmap)
-                                iActorView?.hideLoading()
                             }
 
                             override fun onError(url: String, throwable: Throwable) {
-                                iActorView?.showLoading()
+                                iActorView?.onDownloadDetailsError(throwable)
+                                iActorView?.hideLoading()
                             }
                         })
                     }
@@ -38,7 +40,7 @@ class ActorPresenter(private var iActorView: IActorView?) :
 
                 override fun onError(throwable: Throwable) {
                     iActorView?.onDownloadDetailsError(throwable)
-                    iActorView?.showLoading()
+                    iActorView?.hideLoading()
                 }
             })
     }
@@ -52,12 +54,9 @@ class ActorPresenter(private var iActorView: IActorView?) :
 
                 override fun onError(throwable: Throwable) {
                     iActorView?.onDownloadDetailsError(throwable)
+                    iActorView?.hideLoading()
                 }
             })
-    }
-
-    override fun onDestroy() {
-        iActorView = null
     }
 
     override fun onDownloadActorMovies(actorId: Int) {
@@ -65,11 +64,17 @@ class ActorPresenter(private var iActorView: IActorView?) :
             .getActorMovies(actorId, object : MoviesCallback<ActorMovies> {
                 override fun onSuccess(result: ActorMovies) {
                     iActorView?.onDownloadActorMovies(result)
+                    iActorView?.hideLoading()
                 }
 
                 override fun onError(throwable: Throwable) {
                     iActorView?.onDownloadDetailsError(throwable)
+                    iActorView?.hideLoading()
                 }
             })
+    }
+
+    override fun onDestroy() {
+        iActorView = null
     }
 }
