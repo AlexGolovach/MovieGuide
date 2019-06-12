@@ -15,7 +15,7 @@ import com.example.android.movie.R
 import com.example.android.movie.mvp.actor.IActorPresenter
 import com.example.android.movie.mvp.actor.IActorView
 import com.example.android.movie.ui.main.moviedetails.DetailsActivity
-import com.example.android.movie.ui.utils.dialogimage.DialogImageFragment
+import com.example.android.movie.ui.utils.DialogImageFragment
 import com.example.android.network.Converter.Companion.getImageUrl
 import com.example.android.network.models.actor.Actor
 import com.example.android.network.models.actor.ActorImages

@@ -1,6 +1,7 @@
 package com.example.android.movie.ui.main.topserials
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
@@ -15,6 +16,7 @@ import com.example.android.movie.mvp.topserials.ITopSerialsPresenter
 import com.example.android.movie.mvp.topserials.ITopSerialsView
 import com.example.android.movie.search.IFragmentListener
 import com.example.android.movie.search.ISearch
+import com.example.android.movie.ui.main.moviedetails.SerialDetailsActivity
 import com.example.android.network.models.serial.Serial
 import com.example.android.network.models.serial.SerialsList
 import kotlinx.android.synthetic.main.fragment_top_serials.*
@@ -48,7 +50,7 @@ class TopSerialsFragment : Fragment(), ITopSerialsView,
 
         getData()
         initRecycler()
-        initResultRecycler()
+        initSearchResultRecycler()
     }
 
     private fun getData() {
@@ -64,7 +66,11 @@ class TopSerialsFragment : Fragment(), ITopSerialsView,
 
             val listener = object : TopSerialsAdapter.Listener {
                 override fun onItemClicked(serial: Serial) {
+                    val intent = Intent(activity, SerialDetailsActivity::class.java)
 
+                    intent.putExtra("SERIAL_ID", serial.id)
+
+                    startActivity(intent)
                 }
             }
 
@@ -73,7 +79,7 @@ class TopSerialsFragment : Fragment(), ITopSerialsView,
         }
     }
 
-    private fun initResultRecycler() {
+    private fun initSearchResultRecycler() {
         val context = searchResultRecyclerView.context
 
         searchResultAdapter = SearchResultSerialsAdapter()
@@ -85,7 +91,11 @@ class TopSerialsFragment : Fragment(), ITopSerialsView,
 
             val listener = object : SearchResultSerialsAdapter.OpenListener {
                 override fun onItemClickedListener(serial: Serial) {
+                    val intent = Intent(activity, SerialDetailsActivity::class.java)
 
+                    intent.putExtra("SERIAL_ID", serial.id)
+
+                    startActivity(intent)
                 }
             }
 

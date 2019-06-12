@@ -11,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.android.database.model.ActorSquad
+import com.example.android.database.model.Information
 import com.example.android.movie.R
 import com.example.android.movie.mvp.moviedetails.IMovieDetailsPresenter
 import com.example.android.movie.mvp.moviedetails.IMovieDetailsView
@@ -150,12 +152,28 @@ class MovieDetailsFragment : Fragment(), IMovieDetailsView {
         collapsingToolbar.title = movie.title
     }
 
+    override fun onDownloadFromBD(result: Information, bitmap: Bitmap) {
+        releaseDateText.text = result.date
+        runtimeText.text = result.runtime
+        movieDescriptionText.text = result.description
+        posterImage?.setImageBitmap(bitmap)
+        collapsingToolbar.title = result.title
+    }
+
     override fun onDownloadActorSquad(actorSquad: MovieActorSquad) {
         movieActorsAdapter.setItems(actorSquad)
     }
 
     override fun onDownloadRecommendedMovies(movies: MovieList) {
         recommendedMoviesAdapter.setItems(movies)
+    }
+
+    override fun onDownloadActorSquadFromBd(result: List<ActorSquad>) {
+
+    }
+
+    override fun onDownloadRecommendedMoviesFromBd(result: List<com.example.android.database.model.Movie>) {
+
     }
 
     override fun onDownloadVideo(videos: List<String>) {

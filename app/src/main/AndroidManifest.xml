@@ -34,6 +34,7 @@
         <activity android:name=".ui.main.moviedetails.DetailsActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.profile.ProfileActivity" />
+        <activity android:name=".ui.main.moviedetails.SerialDetailsActivity" />
     </application>
 
 </manifest>
