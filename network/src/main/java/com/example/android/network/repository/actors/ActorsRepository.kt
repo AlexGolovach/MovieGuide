@@ -4,6 +4,7 @@ import com.example.android.network.NetworkCallback
 import com.example.android.network.models.actor.Actor
 import com.example.android.network.models.actor.ActorImages
 import com.example.android.network.models.moviesquad.MovieActorSquad
+import com.example.android.network.models.serialsquad.SerialActorSquad
 
 interface ActorsRepository{
 
@@ -11,5 +12,7 @@ interface ActorsRepository{
 
     fun getActorImages(actorId: Int, callback: NetworkCallback<ActorImages>)
 
-    fun getActorsSquad(movieId: Int, callback: NetworkCallback<MovieActorSquad>)
+    fun getMovieActorsSquad(movieId: Int, callback: NetworkCallback<MovieActorSquad>)
+
+    fun getSerialActorSquad(serialId: Int, callback: NetworkCallback<SerialActorSquad>)
 }

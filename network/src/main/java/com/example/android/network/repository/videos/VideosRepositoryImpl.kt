@@ -4,16 +4,16 @@ import com.example.android.network.APIClient
 import com.example.android.network.Converter
 import com.example.android.network.NetworkCallback
 import com.example.android.network.httprequest.HttpRequest
-import com.example.android.network.models.movievideo.MovieVideos
+import com.example.android.network.models.VideoList
 
 class VideosRepositoryImpl : VideosRepository {
 
-    override fun getVideosForMovie(movieId: Int, callback: NetworkCallback<MovieVideos>) {
+    override fun getVideosForMovie(movieId: Int, callback: NetworkCallback<VideoList>) {
 
         HttpRequest.getInstance()?.load(APIClient.getVideoForMovie(movieId), object :
             NetworkCallback<String> {
             override fun onSuccess(result: String) {
-                callback.onSuccess(Converter.parsingJson(result, MovieVideos::class.java))
+                callback.onSuccess(Converter.parsingJson(result, VideoList::class.java))
             }
 
             override fun onError(throwable: Throwable) {
@@ -22,4 +22,17 @@ class VideosRepositoryImpl : VideosRepository {
         })
     }
 
+    override fun getVideosForSerial(serialId: Int, callback: NetworkCallback<VideoList>) {
+
+        HttpRequest.getInstance()
+            ?.load(APIClient.getVideoForSerial(serialId), object : NetworkCallback<String> {
+                override fun onSuccess(result: String) {
+                    callback.onSuccess(Converter.parsingJson(result, VideoList::class.java))
+                }
+
+                override fun onError(throwable: Throwable) {
+                    callback.onError(throwable)
+                }
+            })
+    }
 }

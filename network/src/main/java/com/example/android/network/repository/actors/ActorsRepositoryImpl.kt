@@ -7,6 +7,7 @@ import com.example.android.network.httprequest.HttpRequest
 import com.example.android.network.models.actor.Actor
 import com.example.android.network.models.actor.ActorImages
 import com.example.android.network.models.moviesquad.MovieActorSquad
+import com.example.android.network.models.serialsquad.SerialActorSquad
 import java.lang.NullPointerException
 
 class ActorsRepositoryImpl : ActorsRepository {
@@ -42,7 +43,7 @@ class ActorsRepositoryImpl : ActorsRepository {
         })
     }
 
-    override fun getActorsSquad(movieId: Int, callback: NetworkCallback<MovieActorSquad>) {
+    override fun getMovieActorsSquad(movieId: Int, callback: NetworkCallback<MovieActorSquad>) {
 
         HttpRequest.getInstance()?.load(APIClient.getActorsSquad(movieId), object :
             NetworkCallback<String> {
@@ -53,6 +54,20 @@ class ActorsRepositoryImpl : ActorsRepository {
             override fun onError(throwable: Throwable) {
                 callback.onError(NullPointerException("We have some problems with download actor squad"))
             }
+        })
+    }
+
+    override fun getSerialActorSquad(serialId: Int, callback: NetworkCallback<SerialActorSquad>) {
+
+        HttpRequest.getInstance()?.load(APIClient.getSerialActorSquad(serialId), object : NetworkCallback<String> {
+            override fun onSuccess(result: String) {
+                callback.onSuccess(Converter.parsingJson(result, SerialActorSquad::class.java))
+            }
+
+            override fun onError(throwable: Throwable) {
+                callback.onError(throwable)
+            }
+
         })
     }
 }
