@@ -1,26 +1,32 @@
 package com.example.android.movie.ui.main.topmovies
 
+import android.widget.Toast
+import com.example.android.movie.App
 import com.example.android.movie.mvp.topmovies.ITopMoviesPresenter
 import com.example.android.movie.mvp.topmovies.ITopMoviesView
-import com.example.android.network.Injector
+import com.example.android.network.NetworkRepositoryManager
 import com.example.android.network.NetworkCallback
 import com.example.android.network.models.movie.MovieList
 
 class TopMoviesPresenter(private var topMoviesView: ITopMoviesView?) :
     ITopMoviesPresenter {
 
-    override fun onDownloadMovies() {
+    override fun onDownloadMovies(page: Int) {
 
-        Injector.getMoviesRepositoryImpl().loadPopularMovies(object :
+        NetworkRepositoryManager.getMoviesRepositoryImpl().loadPopularMovies(page, object :
             NetworkCallback<MovieList> {
             override fun onSuccess(result: MovieList) {
-                topMoviesView?.onDownloadResult(result)
-                topMoviesView?.hideLoading()
+                if (page != result.totalPages) {
+                    topMoviesView?.onDownloadResult(result)
+                    topMoviesView?.hideLoading()
+                } else {
+                    Toast.makeText(App.get(), "All items", Toast.LENGTH_SHORT).show()
+                }
             }
 
-            override fun onError(throwable: Throwable) {
-                topMoviesView?.onDownloadError(throwable)
-                topMoviesView?.showLoading()
+            override fun onError(error: String) {
+                topMoviesView?.onDownloadError(error)
+                topMoviesView?.hideLoading()
             }
         })
     }
@@ -31,7 +37,7 @@ class TopMoviesPresenter(private var topMoviesView: ITopMoviesView?) :
 
         query?.let {
             if (it.length >= 3) {
-                Injector.getMoviesRepositoryImpl()
+                NetworkRepositoryManager.getMoviesRepositoryImpl()
                     .searchMovie(query, object :
                         NetworkCallback<MovieList> {
                         override fun onSuccess(result: MovieList) {
@@ -42,8 +48,8 @@ class TopMoviesPresenter(private var topMoviesView: ITopMoviesView?) :
                             }
                         }
 
-                        override fun onError(throwable: Throwable) {
-                            topMoviesView?.onDownloadError(throwable)
+                        override fun onError(error: String) {
+                            topMoviesView?.onDownloadError(error)
                         }
                     })
             }

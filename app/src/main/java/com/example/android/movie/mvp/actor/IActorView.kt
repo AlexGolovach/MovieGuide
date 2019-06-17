@@ -1,18 +1,15 @@
 package com.example.android.movie.mvp.actor
 
-import android.graphics.Bitmap
+import com.example.android.database.model.Movie
 import com.example.android.movie.mvp.base.ILoadingView
-import com.example.android.network.models.actor.Actor
-import com.example.android.network.models.actor.ActorImages
-import com.example.android.network.models.movie.actormovies.ActorMovies
 
 interface IActorView: ILoadingView {
 
-    fun onDownloadResultDetails(actor: Actor, image: Bitmap)
+    fun onDownloadResultDetails(actor: com.example.android.database.model.Actor)
 
-    fun onDownloadImageURLs(images: ActorImages)
+    fun onDownloadImageURLs(images: List<String>)
 
-    fun onDownloadActorMovies(movies: ActorMovies)
+    fun onDownloadActorMovies(movies: List<Movie>)
 
-    fun onDownloadDetailsError(throwable: Throwable)
+    fun onDownloadDetailsError(error: String)
 }

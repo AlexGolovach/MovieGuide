@@ -1,26 +1,31 @@
 package com.example.android.movie.ui.main.topserials
 
+import android.widget.Toast
+import com.example.android.movie.App
 import com.example.android.movie.mvp.topserials.ITopSerialsPresenter
 import com.example.android.movie.mvp.topserials.ITopSerialsView
-import com.example.android.network.Injector
+import com.example.android.network.NetworkRepositoryManager
 import com.example.android.network.NetworkCallback
 import com.example.android.network.models.serial.SerialsList
 
 class TopSerialsPresenter(private var topSerialsView: ITopSerialsView?) :
     ITopSerialsPresenter {
 
-    override fun onDownloadSerials() {
-        topSerialsView?.showLoading()
+    override fun onDownloadSerials(page: Int) {
 
-        Injector.getSerialsRepositoryImpl().getPopularSerials(object :
+        NetworkRepositoryManager.getSerialsRepositoryImpl().getPopularSerials(page, object :
             NetworkCallback<SerialsList> {
             override fun onSuccess(result: SerialsList) {
-                topSerialsView?.onDownloadResult(result)
-                topSerialsView?.hideLoading()
+                if (page != result.totalPages) {
+                    topSerialsView?.onDownloadResult(result)
+                    topSerialsView?.hideLoading()
+                } else {
+                    Toast.makeText(App.get(), "All items", Toast.LENGTH_SHORT).show()
+                }
             }
 
-            override fun onError(throwable: Throwable) {
-                topSerialsView?.onDownloadError(throwable)
+            override fun onError(error: String) {
+                topSerialsView?.onDownloadError(error)
                 topSerialsView?.hideLoading()
             }
         })
@@ -32,7 +37,7 @@ class TopSerialsPresenter(private var topSerialsView: ITopSerialsView?) :
 
         query?.let {
             if (it.length >= 3) {
-                Injector.getSerialsRepositoryImpl()
+                NetworkRepositoryManager.getSerialsRepositoryImpl()
                     .getSearchResultSerials(query, object :
                         NetworkCallback<SerialsList> {
                         override fun onSuccess(result: SerialsList) {
@@ -43,8 +48,8 @@ class TopSerialsPresenter(private var topSerialsView: ITopSerialsView?) :
                             }
                         }
 
-                        override fun onError(throwable: Throwable) {
-                            topSerialsView?.onDownloadError(throwable)
+                        override fun onError(error: String) {
+                            topSerialsView?.onDownloadError(error)
                         }
                     })
             }

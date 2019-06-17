@@ -13,7 +13,7 @@ data class Cast(
     val poster: String?,
 
     @SerializedName("id")
-    val id: Int?,
+    val id: Int,
 
     @SerializedName("video")
     val video: Boolean,

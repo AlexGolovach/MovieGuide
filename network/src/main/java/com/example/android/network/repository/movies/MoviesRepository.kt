@@ -7,7 +7,7 @@ import com.example.android.network.models.moviedetails.MovieDetails
 
 interface MoviesRepository {
 
-    fun loadPopularMovies(callback: NetworkCallback<MovieList>)
+    fun loadPopularMovies(page: Int ,callback: NetworkCallback<MovieList>)
 
     fun searchMovie(query: String, callback: NetworkCallback<MovieList>)
 

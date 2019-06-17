@@ -1,29 +1,22 @@
 package com.example.android.movie.mvp.moviedetails
 
-import android.graphics.Bitmap
 import com.example.android.database.model.ActorSquad
-import com.example.android.database.model.Information
+import com.example.android.database.model.Details
 import com.example.android.database.model.Movie
+import com.example.android.database.model.Video
 import com.example.android.movie.mvp.base.ILoadingView
-import com.example.android.network.models.movie.MovieList
-import com.example.android.network.models.moviedetails.MovieDetails
-import com.example.android.network.models.moviesquad.MovieActorSquad
 
 interface IMovieDetailsView: ILoadingView {
 
-    fun onDownloadResultDetails(movie: MovieDetails, poster: Bitmap)
+    fun onDownloadResultDetails(movie: Details)
 
-    fun onDownloadFromBD(result: Information, bitmap: Bitmap)
+    fun onDownloadActorSquad(actorSquad: List<ActorSquad>)
 
-    fun onDownloadActorSquad(actorSquad: MovieActorSquad)
+    fun onDownloadRecommendedMovies(movies: List<Movie>)
 
-    fun onDownloadRecommendedMovies(movies: MovieList)
+    fun onDownloadVideo(videos: List<Video>)
 
-    fun onDownloadVideo(videos: List<String>)
+    fun onDownloadDetailsError(error: String)
 
-    fun onDownloadDetailsError(throwable: Throwable)
-
-    fun onDownloadActorSquadFromBd(result: List<ActorSquad>)
-
-    fun onDownloadRecommendedMoviesFromBd(result: List<Movie>)
+    fun isMovieInFavorites(result: Boolean)
 }

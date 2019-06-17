@@ -78,6 +78,7 @@
         android:enabled="false"
         android:text="@string/login"
         android:textAllCaps="false"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

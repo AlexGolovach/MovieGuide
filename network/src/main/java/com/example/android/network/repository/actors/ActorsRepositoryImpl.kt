@@ -8,9 +8,8 @@ import com.example.android.network.models.actor.Actor
 import com.example.android.network.models.actor.ActorImages
 import com.example.android.network.models.moviesquad.MovieActorSquad
 import com.example.android.network.models.serialsquad.SerialActorSquad
-import java.lang.NullPointerException
 
-class ActorsRepositoryImpl : ActorsRepository {
+internal class ActorsRepositoryImpl : ActorsRepository {
 
     override fun getInformationAboutActor(actorId: Int, callback: NetworkCallback<Actor>) {
 
@@ -21,10 +20,8 @@ class ActorsRepositoryImpl : ActorsRepository {
                 callback.onSuccess(Converter.parsingJson(result, Actor::class.java))
             }
 
-            override fun onError(throwable: Throwable) {
-                if (throwable is NullPointerException) {
-                    callback.onError(NullPointerException("We have some problems with download information about actor"))
-                }
+            override fun onError(error: String) {
+                callback.onError(error)
             }
         })
     }
@@ -37,8 +34,8 @@ class ActorsRepositoryImpl : ActorsRepository {
                 callback.onSuccess(Converter.parsingJson(result, ActorImages::class.java))
             }
 
-            override fun onError(throwable: Throwable) {
-                callback.onError(NullPointerException("We have some problems with download profiles"))
+            override fun onError(error: String) {
+                callback.onError(error)
             }
         })
     }
@@ -51,23 +48,24 @@ class ActorsRepositoryImpl : ActorsRepository {
                 callback.onSuccess(Converter.parsingJson(result, MovieActorSquad::class.java))
             }
 
-            override fun onError(throwable: Throwable) {
-                callback.onError(NullPointerException("We have some problems with download actor squad"))
+            override fun onError(error: String) {
+                callback.onError(error)
             }
         })
     }
 
     override fun getSerialActorSquad(serialId: Int, callback: NetworkCallback<SerialActorSquad>) {
 
-        HttpRequest.getInstance()?.load(APIClient.getSerialActorSquad(serialId), object : NetworkCallback<String> {
-            override fun onSuccess(result: String) {
-                callback.onSuccess(Converter.parsingJson(result, SerialActorSquad::class.java))
-            }
+        HttpRequest.getInstance()
+            ?.load(APIClient.getSerialActorSquad(serialId), object : NetworkCallback<String> {
+                override fun onSuccess(result: String) {
+                    callback.onSuccess(Converter.parsingJson(result, SerialActorSquad::class.java))
+                }
 
-            override fun onError(throwable: Throwable) {
-                callback.onError(throwable)
-            }
+                override fun onError(error: String) {
+                    callback.onError(error)
+                }
 
-        })
+            })
     }
 }

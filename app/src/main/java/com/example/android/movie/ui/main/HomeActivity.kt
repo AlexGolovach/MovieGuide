@@ -4,14 +4,17 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.view.GravityCompat
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import com.example.android.movie.ui.base.BaseActivity
 import com.example.android.movie.R
 import com.example.android.movie.search.IFragmentListener
 import com.example.android.movie.search.ISearch
+import com.example.android.movie.ui.main.favorite.FavoriteActivity
 import com.example.android.movie.ui.main.topmovies.TopMoviesFragment
 import com.example.android.movie.ui.main.topserials.TopSerialsFragment
 import com.example.android.movie.ui.profile.ProfileActivity
@@ -21,21 +24,33 @@ import com.example.android.movie.ui.utils.TabAdapter
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.drawer_header.view.*
 
-class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener, IFragmentListener {
+class HomeActivity : BaseActivity(), SearchView.OnQueryTextListener, IFragmentListener,
+    SwipeRefreshLayout.OnRefreshListener {
 
     private var iSearch = mutableListOf<ISearch>()
+
+    private lateinit var handler: Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_home)
 
+        handler = Handler()
+
         setSupportActionBar(toolbar)
 
         tabLayout.setupWithViewPager(viewPager)
 
         initDrawer()
-        initViewPager()
+
+        swipeRefreshLayout.setOnRefreshListener(this)
+
+        if (isOnline()) {
+            initViewPager()
+        } else {
+            checkConnection()
+        }
     }
 
     private fun initDrawer() {
@@ -56,6 +71,11 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener, IFragm
             when (it.itemId) {
                 R.id.profile -> {
                     startActivity(Intent(this, ProfileActivity::class.java))
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                }
+                R.id.favorites -> {
+                    startActivity(Intent(this, FavoriteActivity::class.java))
+                    drawerLayout.closeDrawer(GravityCompat.START)
                 }
                 R.id.exit -> {
                     startActivity(Intent(this, RegisterActivity::class.java))
@@ -67,6 +87,17 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener, IFragm
             }
             true
         }
+    }
+
+    override fun onRefresh() {
+        handler.postDelayed({
+            swipeRefreshLayout.isRefreshing = false
+            if (isOnline()) {
+                initViewPager()
+            } else {
+                checkConnection()
+            }
+        }, 2000)
     }
 
     private fun initViewPager() {
@@ -124,5 +155,11 @@ class HomeActivity : AppCompatActivity(), SearchView.OnQueryTextListener, IFragm
         } else {
             super.onBackPressed()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        handler.removeCallbacksAndMessages(null)
     }
 }

@@ -1,30 +1,26 @@
 package com.example.android.network.repository.movies
 
-import android.util.Log
 import com.example.android.network.APIClient
 import com.example.android.network.Converter
 import com.example.android.network.NetworkCallback
 import com.example.android.network.httprequest.HttpRequest
-import com.example.android.network.models.moviedetails.MovieDetails
 import com.example.android.network.models.movie.MovieList
 import com.example.android.network.models.movie.actormovies.ActorMovies
-import java.lang.NullPointerException
+import com.example.android.network.models.moviedetails.MovieDetails
 
-class MoviesRepositoryImpl : MoviesRepository {
+internal class MoviesRepositoryImpl : MoviesRepository {
 
-    override fun loadPopularMovies(callback: NetworkCallback<MovieList>) {
+    override fun loadPopularMovies(page: Int, callback: NetworkCallback<MovieList>) {
 
-        HttpRequest.getInstance()?.load(APIClient.GET_POPULAR_MOVIES, object :
+        HttpRequest.getInstance()?.load(APIClient.getPopularMovies(page), object :
             NetworkCallback<String> {
             override fun onSuccess(result: String) {
 
                 callback.onSuccess(Converter.parsingJson(result, MovieList::class.java))
             }
 
-            override fun onError(throwable: Throwable) {
-                if (throwable is NullPointerException) {
-                    Log.d(MoviesRepositoryImpl::class.java.simpleName, throwable.message)
-                }
+            override fun onError(error: String) {
+                callback.onError(error)
             }
         })
     }
@@ -39,10 +35,8 @@ class MoviesRepositoryImpl : MoviesRepository {
                     callback.onSuccess(Converter.parsingJson(result, MovieList::class.java))
                 }
 
-                override fun onError(throwable: Throwable) {
-                    if (throwable is NullPointerException) {
-                        Log.d(MoviesRepositoryImpl::class.java.simpleName, throwable.message)
-                    }
+                override fun onError(error: String) {
+                    callback.onError(error)
                 }
             })
     }
@@ -57,10 +51,8 @@ class MoviesRepositoryImpl : MoviesRepository {
                     callback.onSuccess(Converter.parsingJson(result, MovieDetails::class.java))
                 }
 
-                override fun onError(throwable: Throwable) {
-                    if (throwable is NullPointerException) {
-                        Log.d(MoviesRepositoryImpl::class.java.simpleName, throwable.message)
-                    }
+                override fun onError(error: String) {
+                    callback.onError(error)
                 }
             })
     }
@@ -73,10 +65,8 @@ class MoviesRepositoryImpl : MoviesRepository {
                 callback.onSuccess(Converter.parsingJson(result, ActorMovies::class.java))
             }
 
-            override fun onError(throwable: Throwable) {
-                if (throwable is NullPointerException) {
-                    Log.d(MoviesRepositoryImpl::class.java.simpleName, throwable.message)
-                }
+            override fun onError(error: String) {
+                callback.onError(error)
             }
         })
     }
@@ -94,10 +84,8 @@ class MoviesRepositoryImpl : MoviesRepository {
                     callback.onSuccess(Converter.parsingJson(result, MovieList::class.java))
                 }
 
-                override fun onError(throwable: Throwable) {
-                    if (throwable is NullPointerException) {
-                        Log.d(MoviesRepositoryImpl::class.java.simpleName, throwable.message)
-                    }
+                override fun onError(error: String) {
+                    callback.onError(error)
                 }
             })
     }

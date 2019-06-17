@@ -3,7 +3,6 @@ package com.example.android.movie.ui.main.topserials
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView.VERTICAL
@@ -16,12 +15,14 @@ import com.example.android.movie.mvp.topserials.ITopSerialsPresenter
 import com.example.android.movie.mvp.topserials.ITopSerialsView
 import com.example.android.movie.search.IFragmentListener
 import com.example.android.movie.search.ISearch
-import com.example.android.movie.ui.main.moviedetails.SerialDetailsActivity
+import com.example.android.movie.ui.base.BaseFragment
+import com.example.android.movie.ui.main.details.SerialDetailsActivity
+import com.example.android.movie.ui.utils.Constants.SERIAL_ID
 import com.example.android.network.models.serial.Serial
 import com.example.android.network.models.serial.SerialsList
 import kotlinx.android.synthetic.main.fragment_top_serials.*
 
-class TopSerialsFragment : Fragment(), ITopSerialsView,
+class TopSerialsFragment : BaseFragment(), ITopSerialsView,
     ISearch {
 
     private lateinit var topSerialsPresenter: ITopSerialsPresenter
@@ -68,13 +69,24 @@ class TopSerialsFragment : Fragment(), ITopSerialsView,
                 override fun onItemClicked(serial: Serial) {
                     val intent = Intent(activity, SerialDetailsActivity::class.java)
 
-                    intent.putExtra("SERIAL_ID", serial.id)
+                    intent.putExtra(SERIAL_ID, serial.id)
 
                     startActivity(intent)
                 }
             }
 
+            val loadItems = object : TopSerialsAdapter.LoadItems {
+                override fun onLoadItems(page: Int) {
+                    if (isOnline()) {
+                        topSerialsPresenter.onDownloadSerials(page)
+                    }
+                }
+
+            }
+
             topAdapter.listener = listener
+            topAdapter.loadListener = loadItems
+
             adapter = topAdapter
         }
     }
@@ -93,7 +105,7 @@ class TopSerialsFragment : Fragment(), ITopSerialsView,
                 override fun onItemClickedListener(serial: Serial) {
                     val intent = Intent(activity, SerialDetailsActivity::class.java)
 
-                    intent.putExtra("SERIAL_ID", serial.id)
+                    intent.putExtra(SERIAL_ID, serial.id)
 
                     startActivity(intent)
                 }
@@ -116,6 +128,8 @@ class TopSerialsFragment : Fragment(), ITopSerialsView,
         if (text.isEmpty()) {
             recyclerView.visibility = View.VISIBLE
             searchResultRecyclerView.visibility = View.GONE
+
+            searchResultAdapter.updateItems(emptyList())
         } else {
             recyclerView.visibility = View.GONE
             searchResultRecyclerView.visibility = View.VISIBLE
@@ -124,20 +138,16 @@ class TopSerialsFragment : Fragment(), ITopSerialsView,
     }
 
     override fun onSearchResult(result: SerialsList) {
-        searchResultAdapter.updateItems(result)
+        searchResultAdapter.updateItems(result.results)
     }
 
-    override fun onDownloadError(throwable: Throwable) {
-        if (throwable is NullPointerException) {
-            Toast.makeText(activity, "No serials", Toast.LENGTH_SHORT).show()
-        }
+    override fun onDownloadError(error: String) {
+        Toast.makeText(activity, error, Toast.LENGTH_SHORT).show()
     }
 
     override fun hideLoading() {
-        if (progressBar.visibility == View.VISIBLE) {
-            progressBar.visibility = View.GONE
-            recyclerView.visibility = View.VISIBLE
-        }
+        progressBar.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
     }
 
     override fun onDetach() {

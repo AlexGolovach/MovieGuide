@@ -6,13 +6,16 @@ import com.example.android.network.models.recommendedserials.RecommendSerialsLis
 import com.example.android.network.models.serial.SerialsList
 import com.example.android.network.models.serial.actorserials.ActorSerials
 
-interface SerialsRepository{
+interface SerialsRepository {
 
-    fun getPopularSerials(callback: NetworkCallback<SerialsList>)
+    fun getPopularSerials(page: Int, callback: NetworkCallback<SerialsList>)
 
     fun getSerialDetails(serialId: Int, callback: NetworkCallback<SerialDetails>)
 
-    fun getRecommendedSerialsForSerial(serialId: Int, callback: NetworkCallback<RecommendSerialsList>)
+    fun getRecommendedSerialsForSerial(
+        serialId: Int,
+        callback: NetworkCallback<RecommendSerialsList>
+    )
 
     fun getActorSerials(actorId: Int, callback: NetworkCallback<ActorSerials>)
 

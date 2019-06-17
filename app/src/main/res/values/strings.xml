@@ -22,4 +22,8 @@
     <string name="release_date">Release Date:</string>
     <string name="runtime">Runtime:</string>
     <string name="recommended_serials">Recommended serials:</string>
+    <string name="favorite">Favorite</string>
+    <string name="delete">Delete</string>
+    <string name="no_items">No items</string>
+    <string name="try_again">Try again</string>
 </resources>

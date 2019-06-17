@@ -9,8 +9,7 @@
     <ImageView
         android:id="@+id/actorImage"
         android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/actor_placeholder" />
+        android:layout_height="150dp"/>
 
     <TextView
         android:id="@+id/actorName"

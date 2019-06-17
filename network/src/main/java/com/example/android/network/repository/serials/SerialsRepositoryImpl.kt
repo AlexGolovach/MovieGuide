@@ -9,18 +9,18 @@ import com.example.android.network.models.recommendedserials.RecommendSerialsLis
 import com.example.android.network.models.serial.SerialsList
 import com.example.android.network.models.serial.actorserials.ActorSerials
 
-class SerialsRepositoryImpl : SerialsRepository {
+internal class SerialsRepositoryImpl : SerialsRepository {
 
-    override fun getPopularSerials(callback: NetworkCallback<SerialsList>) {
+    override fun getPopularSerials(page: Int, callback: NetworkCallback<SerialsList>) {
 
-        HttpRequest.getInstance()?.load(APIClient.GET_POPULAR_SERIALS, object :
+        HttpRequest.getInstance()?.load(APIClient.getPopularSerials(page), object :
             NetworkCallback<String> {
             override fun onSuccess(result: String) {
                 callback.onSuccess(Converter.parsingJson(result, SerialsList::class.java))
             }
 
-            override fun onError(throwable: Throwable) {
-                callback.onError(throwable)
+            override fun onError(error: String) {
+                callback.onError(error)
             }
         })
     }
@@ -33,8 +33,8 @@ class SerialsRepositoryImpl : SerialsRepository {
                 callback.onSuccess(Converter.parsingJson(result, SerialDetails::class.java))
             }
 
-            override fun onError(throwable: Throwable) {
-                callback.onError(throwable)
+            override fun onError(error: String) {
+                callback.onError(error)
             }
         })
     }
@@ -56,8 +56,8 @@ class SerialsRepositoryImpl : SerialsRepository {
                     )
                 }
 
-                override fun onError(throwable: Throwable) {
-                    callback.onError(throwable)
+                override fun onError(error: String) {
+                    callback.onError(error)
                 }
             })
     }
@@ -70,8 +70,8 @@ class SerialsRepositoryImpl : SerialsRepository {
                 callback.onSuccess(Converter.parsingJson(result, ActorSerials::class.java))
             }
 
-            override fun onError(throwable: Throwable) {
-                callback.onError(throwable)
+            override fun onError(error: String) {
+                callback.onError(error)
             }
         })
     }
@@ -85,8 +85,8 @@ class SerialsRepositoryImpl : SerialsRepository {
                     callback.onSuccess(Converter.parsingJson(result, SerialsList::class.java))
                 }
 
-                override fun onError(throwable: Throwable) {
-                    callback.onError(throwable)
+                override fun onError(error: String) {
+                    callback.onError(error)
                 }
             })
     }

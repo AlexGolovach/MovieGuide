@@ -1,22 +1,23 @@
 package com.example.android.network.httprequest
 
 import android.os.AsyncTask
+import com.example.android.network.ERROR
 import com.example.android.network.NetworkCallback
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.net.URL
 
-class HttpRequest private constructor(){
+class HttpRequest private constructor() {
 
     companion object {
 
         @Volatile
         private var instance: HttpRequest? = null
 
-        fun getInstance(): HttpRequest?{
-            if (instance == null){
-                synchronized(HttpRequest::class.java){
-                    if (instance == null){
+        fun getInstance(): HttpRequest? {
+            if (instance == null) {
+                synchronized(HttpRequest::class.java) {
+                    if (instance == null) {
                         instance =
                             HttpRequest()
                     }
@@ -31,8 +32,7 @@ class HttpRequest private constructor(){
         if (url != "") {
             LoaderTask(callback).execute(url)
         } else {
-            //TODO don't use NullPointer for own exceptions
-            callback.onError(NullPointerException("Url must not be null"))
+            callback.onError(ERROR)
         }
     }
 

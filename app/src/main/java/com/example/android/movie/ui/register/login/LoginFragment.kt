@@ -3,6 +3,7 @@ package com.example.android.movie.ui.register.login
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
@@ -25,24 +26,26 @@ class LoginFragment : Fragment(), ILoginView {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
-
-        initToolbar(view)
-
-        return view
-    }
+    ): View? = inflater.inflate(R.layout.fragment_login, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         loginPresenter = LoginPresenter(this)
 
+        initToolbar()
         initListeners()
     }
 
+    private fun initToolbar() {
+        toolbar.apply {
+            title = getString(R.string.app_name)
+            activity?.let { ContextCompat.getColor(it, R.color.white) }
+                ?.let { setTitleTextColor(it) }
+        }
+    }
+
     private fun initListeners() {
-        //TODO rename fields
         editEmail.addTextChangedListener(object : TextWatcherAdapter() {
             override fun afterTextChanged(p0: Editable?) {
 
@@ -65,13 +68,15 @@ class LoginFragment : Fragment(), ILoginView {
         }
 
         btnLogin.setOnClickListener {
-            loginPresenter.findUser(editEmail.text.toString(), editPassword.text.toString(), saveAccCheckBox.isChecked)
+            loginPresenter.findUser(
+                editEmail.text.toString(),
+                editPassword.text.toString(),
+                saveAccCheckBox.isChecked
+            )
         }
     }
 
-    override fun findUserSuccess(success: String) {
-        Toast.makeText(activity, success, Toast.LENGTH_SHORT).show()
-
+    override fun findUserSuccess() {
         startActivity(Intent(activity, HomeActivity::class.java))
         activity?.finish()
     }
@@ -82,12 +87,6 @@ class LoginFragment : Fragment(), ILoginView {
 
     private fun updateButtonState() {
         btnLogin.isEnabled = true
-    }
-
-    private fun initToolbar(view: View) {
-        view.toolbar.apply {
-            title = getString(R.string.app_name)
-        }
     }
 
     override fun onDestroy() {

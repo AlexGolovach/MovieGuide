@@ -7,7 +7,7 @@ interface ITopSerialsView: ILoadingView {
 
     fun onDownloadResult(serials: SerialsList)
 
-    fun onDownloadError(throwable: Throwable)
+    fun onDownloadError(error: String)
 
     fun onSearchResult(result: SerialsList)
 }

@@ -9,6 +9,13 @@ fun getBundleWithId(key: String, id: Int?): Bundle {
     return bundle
 }
 
+fun getBundleWithVideo(key: String, videoId: String?): Bundle {
+    val bundle = Bundle()
+    videoId?.let { bundle.putString(key, it) }
+
+    return bundle
+}
+
 fun convertTime(time: Int?): String? {
 
     val hours = time?.div(60)

@@ -3,7 +3,6 @@ package com.example.android.movie.ui.main.topmovies
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView.VERTICAL
@@ -16,13 +15,14 @@ import com.example.android.movie.mvp.topmovies.ITopMoviesPresenter
 import com.example.android.movie.mvp.topmovies.ITopMoviesView
 import com.example.android.movie.search.IFragmentListener
 import com.example.android.movie.search.ISearch
-import com.example.android.movie.ui.main.moviedetails.DetailsActivity
+import com.example.android.movie.ui.base.BaseFragment
+import com.example.android.movie.ui.main.details.MovieDetailsActivity
+import com.example.android.movie.ui.utils.Constants.MOVIE_ID
 import com.example.android.network.models.movie.Movie
 import com.example.android.network.models.movie.MovieList
 import kotlinx.android.synthetic.main.fragment_top_movies.*
-import java.lang.NullPointerException
 
-class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
+class TopMoviesFragment : BaseFragment(), ITopMoviesView, ISearch {
 
     private lateinit var topMoviesPresenter: ITopMoviesPresenter
 
@@ -50,6 +50,7 @@ class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
         topMoviesPresenter = TopMoviesPresenter(this)
 
         getData()
+
         initRecycler()
         initSearchResultRecycler()
     }
@@ -62,20 +63,33 @@ class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
         val context = recyclerView.context
 
         recyclerView.apply {
-            layoutManager = LinearLayoutManager(context, VERTICAL, false)
+            val linearLayoutManager = LinearLayoutManager(context, VERTICAL, false)
+
+            layoutManager = linearLayoutManager
             setHasFixedSize(true)
 
             val listener = object : TopMoviesAdapter.Listener {
                 override fun onItemClicked(movie: Movie) {
-                    val intent = Intent(activity, DetailsActivity::class.java)
+                    val intent = Intent(activity, MovieDetailsActivity::class.java)
 
-                    intent.putExtra("MOVIE_ID", movie.id)
+                    intent.putExtra(MOVIE_ID, movie.id)
 
                     startActivity(intent)
                 }
             }
 
+            val loadItems = object : TopMoviesAdapter.LoadItems {
+                override fun onLoadItems(page: Int) {
+                    if (isOnline()) {
+                        topMoviesPresenter.onDownloadMovies(page)
+                    }
+                }
+
+            }
+
             topAdapter.listener = listener
+            topAdapter.loadListener = loadItems
+
             adapter = topAdapter
         }
     }
@@ -92,9 +106,9 @@ class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
 
             val listener = object : SearchResultMoviesAdapter.OpenListener {
                 override fun onItemClickedListener(movie: Movie) {
-                    val intent = Intent(activity, DetailsActivity::class.java)
+                    val intent = Intent(activity, MovieDetailsActivity::class.java)
 
-                    intent.putExtra("MOVIE_ID", movie.id)
+                    intent.putExtra(MOVIE_ID, movie.id)
 
                     startActivity(intent)
                 }
@@ -110,13 +124,15 @@ class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
     }
 
     override fun onDownloadResult(movies: MovieList) {
-        topAdapter.setItems(movies)
+        topAdapter.updateItems(movies)
     }
 
     override fun onTextQuery(text: String) {
         if (text.isEmpty()) {
             recyclerView.visibility = View.VISIBLE
             searchResultRecyclerView.visibility = View.GONE
+
+            searchResultAdapter.updateItems(emptyList())
         } else {
             recyclerView.visibility = View.GONE
             searchResultRecyclerView.visibility = View.VISIBLE
@@ -125,20 +141,16 @@ class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
     }
 
     override fun onSearchResult(result: MovieList) {
-        searchResultAdapter.updateItems(result)
+        searchResultAdapter.updateItems(result.results)
     }
 
-    override fun onDownloadError(throwable: Throwable) {
-        if (throwable is NullPointerException) {
-            Toast.makeText(activity, "No movies", Toast.LENGTH_SHORT).show()
-        }
+    override fun onDownloadError(error: String) {
+        Toast.makeText(activity, error, Toast.LENGTH_SHORT).show()
     }
 
     override fun hideLoading() {
-        if (progressBar.visibility == View.VISIBLE) {
-            progressBar.visibility = View.GONE
-            recyclerView.visibility = View.VISIBLE
-        }
+        progressBar.visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
     }
 
     override fun onDetach() {
@@ -148,7 +160,6 @@ class TopMoviesFragment : Fragment(), ITopMoviesView, ISearch {
 
     override fun onDestroy() {
         topMoviesPresenter.onDestroy()
-
         super.onDestroy()
     }
 }

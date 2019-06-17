@@ -1,7 +1,7 @@
 package com.example.android.movie.ui.utils
 
 import android.content.Context
-import com.example.android.database.App
+import com.example.android.movie.App
 import com.example.android.database.model.User
 import com.google.gson.Gson
 
@@ -38,8 +38,7 @@ object AccountOperation {
         editor?.apply()
     }
 
-    fun isAccountSaved(): Boolean?{
+    fun isAccountSaved(): Boolean{
 
-        return sharedPreferences?.getBoolean(SAVE_ACC,false)
-    }
+        return sharedPreferences?.getBoolean(SAVE_ACC,false)?:false    }
 }

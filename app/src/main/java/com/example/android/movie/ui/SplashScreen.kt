@@ -18,7 +18,7 @@ class SplashScreen : AppCompatActivity() {
         handler = Handler()
         handler.postDelayed({
 
-            if (AccountOperation.isAccountSaved() == true) {
+            if (AccountOperation.isAccountSaved()) {
                 startActivity(Intent(this, HomeActivity::class.java))
 
                 finish()

@@ -5,18 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.android.movie.R
+import com.example.android.network.Converter.getImageUrl
 import com.example.android.network.models.serial.Serial
 import com.example.android.network.models.serial.SerialsList
 import kotlinx.android.synthetic.main.item_view_search_result.view.*
+import java.lang.ref.WeakReference
 
-class SearchResultSerialsAdapter(
-    private var items: SerialsList = SerialsList(
-        0,
-        0,
-        0,
-        emptyList()
-    )
-) :
+class SearchResultSerialsAdapter(private var items: List<Serial> = listOf()) :
     RecyclerView.Adapter<SearchResultSerialsAdapter.ViewHolder>() {
 
     var openListener: OpenListener? = null
@@ -28,29 +23,35 @@ class SearchResultSerialsAdapter(
         val holder = ViewHolder(view)
 
         holder.itemView.setOnClickListener {
-            openListener?.onItemClickedListener(items.results[holder.adapterPosition])
+            openListener?.onItemClickedListener(items[holder.adapterPosition])
         }
 
         return holder
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val serial = items.results[position]
+        val serial = items[position]
 
-        holder.itemView.title.text = serial.title
+        holder.bind(serial)
     }
 
-    fun updateItems(list: SerialsList) {
-        items = SerialsList(0, 0, 0, emptyList())
+    fun updateItems(list: List<Serial>) {
         items = list
         notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        return items.results.size
+        return items.size
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bind(serial: Serial) {
+            val imageUrl = serial.poster?.let { getImageUrl(it) }
+
+            ImageLoader.getInstance()?.load(imageUrl, WeakReference(itemView.movieImage))
+            itemView.title.text = serial.title
+        }
+    }
 
     interface OpenListener {
         fun onItemClickedListener(serial: Serial)

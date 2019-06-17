@@ -6,7 +6,7 @@ import com.example.android.network.NetworkCallback
 import com.example.android.network.httprequest.HttpRequest
 import com.example.android.network.models.VideoList
 
-class VideosRepositoryImpl : VideosRepository {
+internal class VideosRepositoryImpl : VideosRepository {
 
     override fun getVideosForMovie(movieId: Int, callback: NetworkCallback<VideoList>) {
 
@@ -16,8 +16,8 @@ class VideosRepositoryImpl : VideosRepository {
                 callback.onSuccess(Converter.parsingJson(result, VideoList::class.java))
             }
 
-            override fun onError(throwable: Throwable) {
-                callback.onError(throwable)
+            override fun onError(error: String) {
+                callback.onError(error)
             }
         })
     }
@@ -30,8 +30,8 @@ class VideosRepositoryImpl : VideosRepository {
                     callback.onSuccess(Converter.parsingJson(result, VideoList::class.java))
                 }
 
-                override fun onError(throwable: Throwable) {
-                    callback.onError(throwable)
+                override fun onError(error: String) {
+                    callback.onError(error)
                 }
             })
     }

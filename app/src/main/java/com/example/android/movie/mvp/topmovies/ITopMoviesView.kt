@@ -7,7 +7,7 @@ interface ITopMoviesView: ILoadingView {
 
     fun onDownloadResult(movies: MovieList)
 
-    fun onDownloadError(throwable: Throwable)
+    fun onDownloadError(error: String)
 
     fun onSearchResult(result: MovieList)
 }

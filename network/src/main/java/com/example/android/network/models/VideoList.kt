@@ -14,10 +14,10 @@ data class VideoList(
         val id: String?,
 
         @SerializedName("iso_639_1")
-        val iso_639_1: String?,
+        val isoLanguage: String?,
 
         @SerializedName("iso_3166_1")
-        val iso_3166_1: String?,
+        val isoCountry: String?,
 
         @SerializedName("key")
         val key: String?,

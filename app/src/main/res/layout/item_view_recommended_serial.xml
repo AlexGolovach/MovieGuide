@@ -11,14 +11,13 @@
         android:gravity="center">
 
         <ImageView
-            android:id="@+id/poster_show_image"
+            android:id="@+id/posterShowImage"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/image_placeholder" />
+            android:scaleType="centerCrop"/>
 
         <TextView
-            android:id="@+id/show_title_text"
+            android:id="@+id/showTitleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -35,7 +34,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/show_rating_text"
+                android:id="@+id/showRatingText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"

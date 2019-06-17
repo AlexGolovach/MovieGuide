@@ -10,5 +10,11 @@ interface ISerialDetailsPresenter {
 
     fun onDownloadVideo(serialId: Int)
 
+    fun addToFavorite(serialId: Int, type: String)
+
+    fun checkSerialInFavorites(userId: Int, serialId: Int)
+
+    fun deleteFromFavorite(userId: Int, serialId: Int)
+
     fun onDestroy()
 }

@@ -1,10 +1,14 @@
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.AsyncTask
+import android.os.Handler
+import android.os.Looper
 import android.util.LruCache
-import com.example.android.imageloader.Callback
-import java.io.IOException
+import android.widget.ImageView
+import com.example.android.imageloader.R
+import java.lang.ref.WeakReference
+import java.net.HttpURLConnection
 import java.net.URL
+import java.util.concurrent.Executors
 
 class ImageLoader private constructor() {
 
@@ -27,6 +31,8 @@ class ImageLoader private constructor() {
     }
 
     private val cache: LruCache<String, Bitmap>
+    private var executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+    private val handler = Handler(Looper.getMainLooper())
 
     init {
         val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
@@ -39,42 +45,59 @@ class ImageLoader private constructor() {
         }
     }
 
-    fun load(url: String, callback: Callback) {
-        val bitmap = cache.get(url)
+    fun load(imageUrl: String?, weakReference: WeakReference<ImageView>) {
+        val imageView = weakReference.get()
 
-        if (bitmap != null) {
-            callback.onSuccess(url, bitmap)
+        if (imageUrl != null) {
+            val currentUrl = imageView?.getTag(R.id.IMAGE_TAG_URL) as String?
+
+            imageView?.setTag(R.id.IMAGE_TAG_URL, imageUrl)
+
+            val bitmap = cache.get(imageUrl)
+
+            if (bitmap != null && imageView != null) {
+                updateImageView(imageView, bitmap)
+                return
+            }
+
+            if (currentUrl != imageUrl || imageView?.drawable == null) {
+                imageView?.setImageResource(R.drawable.image_placeholder)
+            }
+
+            executor.submit {
+                val image: Bitmap? = downloadImage(imageUrl)
+
+                if (image != null && imageView?.getTag(R.id.IMAGE_TAG_URL) == imageUrl) {
+                    updateImageView(imageView, image)
+                    cache.put(imageUrl, image)
+                }
+            }
         } else {
-            LoaderTask(callback).execute(url)
+            imageView?.setImageResource(R.drawable.image_placeholder)
         }
     }
 
-    private class LoaderTask(var callback: Callback) :
-        AsyncTask<String, Void, Bitmap>() {
+    private fun updateImageView(imageView: ImageView, bitmap: Bitmap) {
+        handler.post {
+            imageView.background = null
+            imageView.setImageBitmap(bitmap)
+        }
+    }
 
-        lateinit var url: String
+    private fun downloadImage(imageUrl: String): Bitmap? {
+        var bitmap: Bitmap? = null
 
-        override fun doInBackground(vararg urls: String): Bitmap? {
-            url = urls[0]
-            val image: Bitmap
+        try {
+            val url = URL(imageUrl)
+            val connection = url.openConnection() as HttpURLConnection
 
-            try {
-                val inputStream = URL(url).openStream()
-                image = BitmapFactory.decodeStream(inputStream)
-                inputStream.close()
+            bitmap = BitmapFactory.decodeStream(connection.inputStream)
 
-            } catch (e: IOException) {
-                callback.onError(url, NullPointerException("Not found image"))
-                return null
-            }
-
-            return image
+            connection.disconnect()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
 
-        override fun onPostExecute(bitmap: Bitmap) {
-            getInstance()?.cache?.put(url, bitmap)
-            callback.onSuccess(url, bitmap)
-
-        }
+        return bitmap
     }
 }

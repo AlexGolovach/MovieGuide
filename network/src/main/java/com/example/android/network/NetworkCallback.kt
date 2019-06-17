@@ -4,5 +4,5 @@ interface NetworkCallback<T> {
 
     fun onSuccess(result: T)
 
-    fun onError(throwable: Throwable)
+    fun onError(error: String)
 }
