@@ -250,7 +250,8 @@ class SerialDetailsFragment : BaseFragment(), ISerialDetailsView,
                         getBundleWithVideo(VIDEO_ID, video.videoId)
 
                     fragmentManager?.beginTransaction()
-                        ?.replace(R.id.container, playerFragment)
+                        ?.addToBackStack(video.videoId)
+                        ?.replace(R.id.container, playerFragment,video.videoId)
                         ?.commit()
                 }
 
